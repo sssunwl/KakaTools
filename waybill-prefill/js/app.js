@@ -185,24 +185,36 @@ function copyToClipboard(text, btn) {
 // Tab 切換
 function switchTab(tabName) {
     // 隱藏所有 Tab 內容
-    document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('show');
-    });
+    const tabContents = document.querySelectorAll('.tab-content');
+    if (tabContents) {
+        tabContents.forEach(tab => {
+            if (tab) tab.classList.remove('show');
+        });
+    }
 
     // 移除所有按鈕的 active 狀態
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
+    const buttons = document.querySelectorAll('.tab-btn');
+    if (buttons) {
+        buttons.forEach(btn => {
+            if (btn) btn.classList.remove('active');
+        });
+    }
 
     // 顯示選擇的 Tab
-    document.getElementById(tabName).classList.add('show');
+    const tabElement = document.getElementById(tabName);
+    if (tabElement) {
+        tabElement.classList.add('show');
+    }
 
     // 激活對應按鈕
-    if (event && event.target) {
+    if (event && event.target && event.target.classList) {
         event.target.classList.add('active');
     } else {
-        // 初次載入時，激活 DHL 按鈕
-        document.querySelector('.tab-btn').classList.add('active');
+        // 初次載入時，找第一個 tab-btn 激活
+        const firstBtn = document.querySelector('.tab-btn');
+        if (firstBtn && firstBtn.classList) {
+            firstBtn.classList.add('active');
+        }
     }
 }
 
