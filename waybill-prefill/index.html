@@ -13,17 +13,18 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #e0e0e0;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
+            background: #0f3460;
             border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             overflow: hidden;
         }
 
@@ -46,6 +47,8 @@
 
         main {
             padding: 40px 30px;
+            background: #0f3460;
+            color: #e0e0e0;
         }
 
         .step {
@@ -69,7 +72,7 @@
         .step-title {
             font-size: 18px;
             font-weight: 600;
-            color: #333;
+            color: #e0e0e0;
             display: inline-block;
             vertical-align: middle;
         }
@@ -84,19 +87,19 @@
             border-radius: 8px;
             padding: 40px;
             text-align: center;
-            background: #f7f9ff;
+            background: #1a2749;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .upload-area:hover {
             border-color: #764ba2;
-            background: #f0f4ff;
+            background: #2a3a59;
         }
 
         .upload-area.dragover {
             border-color: #764ba2;
-            background: #e8f0ff;
+            background: #3a4a69;
         }
 
         .upload-area p {
@@ -129,7 +132,7 @@
         .file-group label {
             font-size: 14px;
             font-weight: 600;
-            color: #333;
+            color: #e0e0e0;
             margin-bottom: 10px;
         }
 
@@ -145,7 +148,7 @@
         .file-button {
             display: block;
             padding: 12px 20px;
-            background: #f0f4ff;
+            background: #1a2749;
             border: 2px solid #667eea;
             border-radius: 6px;
             color: #667eea;
@@ -163,7 +166,7 @@
 
         .file-name {
             font-size: 13px;
-            color: #999;
+            color: #888;
             margin-top: 6px;
             word-break: break-all;
         }
@@ -213,7 +216,7 @@
         .tabs {
             display: flex;
             gap: 10px;
-            border-bottom: 2px solid #eee;
+            border-bottom: 2px solid #334455;
             margin-bottom: 30px;
         }
 
@@ -249,20 +252,20 @@
         }
 
         .field-card {
-            border: 1px solid #eee;
+            border: 1px solid #334455;
             border-radius: 8px;
             padding: 16px;
-            background: #fafafa;
+            background: #1a2749;
             transition: all 0.3s ease;
         }
 
         .field-card:hover {
             border-color: #667eea;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
 
         .field-card.error {
-            background: #fff5f5;
+            background: #2a1a1a;
             border-color: #e74c3c;
         }
 
@@ -277,12 +280,12 @@
 
         .field-value {
             font-size: 15px;
-            color: #333;
+            color: #e0e0e0;
             word-break: break-word;
             line-height: 1.5;
             margin-bottom: 10px;
             font-family: 'Courier New', monospace;
-            background: white;
+            background: #0f1e2e;
             padding: 8px;
             border-radius: 4px;
             min-height: 24px;
@@ -319,9 +322,9 @@
         }
 
         .error-message {
-            background: #fff5f5;
+            background: #2a1a1a;
             border-left: 4px solid #e74c3c;
-            color: #e74c3c;
+            color: #ff6b6b;
             padding: 15px;
             border-radius: 4px;
             margin: 20px 0;
@@ -329,9 +332,9 @@
         }
 
         .success-message {
-            background: #f0fff4;
+            background: #1a2a1a;
             border-left: 4px solid #27ae60;
-            color: #27ae60;
+            color: #51cf66;
             padding: 15px;
             border-radius: 4px;
             margin: 20px 0;
@@ -356,11 +359,11 @@
         }
 
         footer {
-            border-top: 1px solid #eee;
+            border-top: 1px solid #334455;
             padding: 20px 30px;
-            background: #f9f9f9;
+            background: #0a1628;
             font-size: 12px;
-            color: #999;
+            color: #666;
             text-align: center;
         }
 
