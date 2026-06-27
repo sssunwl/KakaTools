@@ -215,10 +215,15 @@
         }
 
         .table-row td {
-            padding: 12px 10px;
+            padding: 0px;
             text-align: center;
             border: none;
             vertical-align: middle;
+            height: auto;
+        }
+
+        .table-row td.time-cell {
+            padding: 12px 10px;
             height: 52px;
         }
 
@@ -248,16 +253,13 @@
         .route-badge {
             font-weight: 700;
             font-size: 26px;
-            padding: 10px 10px !important;
+            padding: 10px 0px !important;
             border-radius: 6px;
             text-align: center;
             color: white;
             width: 100%;
-            margin: auto;
-            letter-spacing: 0px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: block;
+            line-height: 1.4;
         }
 
         .route-name-row {
@@ -344,12 +346,12 @@
             font-weight: 600;
             letter-spacing: 0px;
             line-height: 1.4;
-            padding: 12px 12px !important;
+            padding: 12px 10px !important;
             border: none !important;
-            border-left: none !important;
             text-align: center;
             background: white;
-            width: 100%;
+            width: 100% !important;
+            display: block;
         }
 
         .mtr-row {
