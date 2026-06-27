@@ -28,10 +28,12 @@ async function updateBusDisplay() {
     clearError();
 
     const busData = await fetchAllBusData();
+    console.log('Bus data result:', busData);
 
     if (!busData || (busData.outbound.length === 0 && busData.inbound.length === 0)) {
         loadingContainer.style.display = 'none';
-        showError('無法獲取實時數據，請稍候重試...');
+        const debugMsg = busData ? `無班次數據 (O:${busData.outbound.length}/I:${busData.inbound.length})` : '無法連接 API';
+        showError(`無法獲取實時數據: ${debugMsg} | 請打開控制台查看詳情`);
         return;
     }
 

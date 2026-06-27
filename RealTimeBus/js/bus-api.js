@@ -55,7 +55,9 @@ async function fetchStopETA(stopId) {
             return null;
         }
 
-        const filtered = data.data.filter(item => item.route === BUS_CONFIG.route);
+        const filtered = data.data.filter(item => String(item.route) === String(BUS_CONFIG.route));
+        console.log(`篩選條件: route === ${BUS_CONFIG.route}`)
+        console.log(`全部項目的 route:`, data.data.map(x => x.route))
         console.log(`Route ${BUS_CONFIG.route} 的班次:`, filtered);
 
         return filtered
