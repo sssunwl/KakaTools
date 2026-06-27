@@ -67,15 +67,19 @@ async function updateXinshengcun() {
     // KMB 53
     const outbound = kmbData?.outbound?.[0];
     const inbound = kmbData?.inbound?.[0];
-    html += `<tr class="table-row kmb-53">
+    html += `<tr class="table-row kmb-badge">
         <td class="route-badge badge-53">53</td>
+        <td colspan="2"></td>
+    </tr>`;
+
+    // 往荃灣
+    html += `<tr class="table-row kmb-53">
         <td class="direction-label">📤 往荃灣</td>
         <td class="time-cell ${outbound?.className || ''}">${outbound?.formattedETA || '-'}</td>
     </tr>`;
 
-    // KMB 53 往元朗
+    // 往元朗
     html += `<tr class="table-row kmb-53">
-        <td></td>
         <td class="direction-label">📥 往元朗</td>
         <td class="time-cell ${inbound?.className || ''}">${inbound?.formattedETA || '-'}</td>
     </tr>`;
@@ -111,15 +115,19 @@ async function updateTianshui() {
     const downTrains = trainData.DOWN || [];
 
     // 屯馬
-    html += `<tr class="table-row train-mtr">
+    html += `<tr class="table-row train-badge">
         <td class="route-badge badge-up">🚆 屯馬</td>
+        <td colspan="2"></td>
+    </tr>`;
+
+    // 往烏溪沙
+    html += `<tr class="table-row train-mtr">
         <td class="direction-label">📥 往烏溪沙</td>
         <td class="time-cell">${downTrains[0]?.ttnt || '-'} 分</td>
     </tr>`;
 
-    // 屯馬 往屯門
+    // 往屯門
     html += `<tr class="table-row train-mtr">
-        <td></td>
         <td class="direction-label">📤 往屯門</td>
         <td class="time-cell">${upTrains[0]?.ttnt || '-'} 分</td>
     </tr>`;
