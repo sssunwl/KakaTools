@@ -84,9 +84,9 @@
         }
 
         .bus-list {
-            display: flex;
-            flex-direction: row;
-            gap: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
 
         .direction {
@@ -225,15 +225,6 @@
 
             main {
                 padding: 20px;
-            }
-
-            .bus-list {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .direction {
-                margin-bottom: 25px;
             }
 
             .bus-item {
