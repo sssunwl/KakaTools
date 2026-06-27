@@ -3,8 +3,8 @@
 const BUS_CONFIG = {
     route: '53',
     stops: {
-        outbound: 'TI01-N-1150-0', // 去程（暫時使用已知編號）
-        inbound: 'TI01-S-1150-0'   // 回程（試試看這個編號）
+        outbound: 'YL623', // 新生村 往荃灣方向
+        inbound: 'YL623'   // 新生村 回程
     }
 };
 

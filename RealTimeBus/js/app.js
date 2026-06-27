@@ -38,9 +38,9 @@ async function updateBusDisplay() {
     // 構建 HTML
     let html = '<div class="bus-list">';
 
-    // 去程
+    // 往荃灣
     html += '<div class="direction">';
-    html += '<div class="direction-title">📤 往屯門方向</div>';
+    html += '<div class="direction-title">📤 往荃灣方向</div>';
     if (busData.outbound.length > 0) {
         html += busData.outbound.map(bus => `
             <div class="bus-item">
@@ -59,7 +59,7 @@ async function updateBusDisplay() {
 
     // 回程
     html += '<div class="direction">';
-    html += '<div class="direction-title">📥 往灣仔方向</div>';
+    html += '<div class="direction-title">📥 回程方向</div>';
     if (busData.inbound.length > 0) {
         html += busData.inbound.map(bus => `
             <div class="bus-item">
