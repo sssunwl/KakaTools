@@ -89,6 +89,21 @@
             display: none !important;
         }
 
+        .error-container {
+            background: #2a1a1a;
+            border-left: 4px solid #e74c3c;
+            color: #ff6b6b;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .error-container.show {
+            display: block;
+        }
+
         .bus-table {
             width: 100%;
             border-collapse: collapse;
@@ -338,20 +353,34 @@
         </header>
 
         <main>
-            <div class="station-header">
+            <!-- 新生村 -->
+            <div class="station-header" onclick="toggleStation('xinshengcun')">
                 <h2>📍 新生村</h2>
-                <button class="toggle-btn" onclick="toggleStation()">▼</button>
+                <button class="toggle-btn" data-station="xinshengcun">▼</button>
             </div>
 
-            <div id="stationContainer" class="station-container" style="display: block;">
-                <div id="errorContainer"></div>
-
-                <div id="loadingContainer" class="loading">
+            <div id="xinshengcun" class="station-container" style="display: block;">
+                <div id="xinshengcun-error" class="error-container"></div>
+                <div id="xinshengcun-loading" class="loading">
                     <div class="spinner"></div>
-                    <p>正在加載實時數據...</p>
+                    <p>正在加載巴士數據...</p>
                 </div>
+                <div id="xinshengcun-content" style="display: none;"></div>
+            </div>
 
-                <div id="busContainer" style="display: none;"></div>
+            <!-- 天水圍站 -->
+            <div class="station-header" onclick="toggleStation('tianshui')">
+                <h2>🚆 天水圍站</h2>
+                <button class="toggle-btn" data-station="tianshui">▼</button>
+            </div>
+
+            <div id="tianshui" class="station-container" style="display: block;">
+                <div id="tianshui-error" class="error-container"></div>
+                <div id="tianshui-loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>正在加載列車數據...</p>
+                </div>
+                <div id="tianshui-content" style="display: none;"></div>
             </div>
 
             <div class="last-updated">

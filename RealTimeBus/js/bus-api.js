@@ -124,3 +124,45 @@ async function fetchMTRBusETA(routeName, targetStopId) {
         return null;
     }
 }
+
+// 港鐵列車 API
+const MTR_TRAIN_API = 'https://rt.data.gov.hk/v1/transport/mtr/getSchedule.php';
+
+async function fetchMTRTrainETA(line, station) {
+    if (!line || !station) return null;
+
+    try {
+        const params = new URLSearchParams({
+            line: line,
+            sta: station,
+            lang: 'TC'
+        });
+
+        const response = await fetch(`${MTR_TRAIN_API}?${params}`);
+        if (!response.ok) return null;
+
+        const data = await response.json();
+        if (data.status !== 1) return null;
+
+        const key = `${line}-${station}`;
+        const trains = data.data?.[key];
+
+        if (!trains) return null;
+
+        return {
+            UP: (trains.UP || []).slice(0, 2).map(t => ({
+                ttnt: t.ttnt,
+                dest: t.dest,
+                plat: t.plat
+            })),
+            DOWN: (trains.DOWN || []).slice(0, 2).map(t => ({
+                ttnt: t.ttnt,
+                dest: t.dest,
+                plat: t.plat
+            }))
+        };
+    } catch (error) {
+        console.error(`MTR Train ${line}-${station} fetch failed:`, error);
+        return null;
+    }
+}

@@ -2,30 +2,38 @@
 
 let updateInterval = null;
 
-function showError(message) {
-    const container = document.getElementById('errorContainer');
-    container.innerHTML = `<div class="error">⚠️ ${message}</div>`;
+function showError(stationId, message) {
+    const container = document.getElementById(`${stationId}-error`);
+    container.innerHTML = `⚠️ ${message}`;
+    container.classList.add('show');
 }
 
-function clearError() {
-    document.getElementById('errorContainer').innerHTML = '';
+function clearError(stationId) {
+    const container = document.getElementById(`${stationId}-error`);
+    container.innerHTML = '';
+    container.classList.remove('show');
 }
 
-function toggleStation() {
-    const container = document.getElementById('stationContainer');
-    const btn = document.querySelector('.toggle-btn');
+function toggleStation(stationId) {
+    const container = document.getElementById(stationId);
+    const btn = document.querySelector(`[data-station="${stationId}"]`);
     container.classList.toggle('hidden');
     btn.classList.toggle('collapsed');
 }
 
-async function updateBusDisplay() {
-    const loadingContainer = document.getElementById('loadingContainer');
-    const busContainer = document.getElementById('busContainer');
-    const lastUpdatedSpan = document.getElementById('lastUpdated');
+async function updateAllStations() {
+    updateXinshengcun();
+    updateTianshui();
+}
 
-    loadingContainer.style.display = 'block';
-    busContainer.style.display = 'none';
-    clearError();
+async function updateXinshengcun() {
+    const loadingId = 'xinshengcun-loading';
+    const contentId = 'xinshengcun-content';
+    const stationId = 'xinshengcun';
+
+    document.getElementById(loadingId).style.display = 'block';
+    document.getElementById(contentId).style.display = 'none';
+    clearError(stationId);
 
     const [kmbData, mtrK75aData, mtrK75pData] = await Promise.all([
         fetchAllBusData(),
@@ -34,65 +42,67 @@ async function updateBusDisplay() {
     ]);
 
     if (!kmbData && !mtrK75aData && !mtrK75pData) {
-        loadingContainer.style.display = 'none';
-        showError('無法獲取實時數據，請稍候重試...');
+        document.getElementById(loadingId).style.display = 'none';
+        showError(stationId, '無法獲取實時數據，請稍候重試...');
         return;
     }
 
-    // 構建表格 HTML
     let html = '<table class="bus-table"><tbody>';
+    html += '<tr class="table-header"><td></td><td>最快</td><td>下一班</td></tr>';
+    html += `<tr class="table-row"><td class="route-name">K75A</td><td class="time-cell">${mtrK75aData?.[0]?.time || '-'}</td><td class="time-cell">${mtrK75aData?.[1]?.time || '-'}</td></tr>`;
+    html += `<tr class="table-row"><td class="route-name">K75P</td><td class="time-cell">${mtrK75pData?.[0]?.time || '-'}</td><td class="time-cell">${mtrK75pData?.[1]?.time || '-'}</td></tr>`;
+    html += '<tr class="table-row kmb-row"><td class="route-name">53</td><td class="time-cell direction-label">往荃灣</td><td class="time-cell direction-label">往元朗</td></tr>';
+    html += '<tr class="table-row kmb-times"><td></td>';
+    const outbound = kmbData?.outbound?.[0];
+    const inbound = kmbData?.inbound?.[0];
+    html += `<td class="time-cell ${outbound?.className || ''}">${outbound?.formattedETA || '-'}</td>`;
+    html += `<td class="time-cell ${inbound?.className || ''}">${inbound?.formattedETA || '-'}</td>`;
+    html += '</tr></tbody></table>';
 
-    // 表頭
-    html += '<tr class="table-header">';
-    html += '<td></td>';
-    html += '<td>最快</td>';
-    html += '<td>下一班</td>';
-    html += '</tr>';
+    document.getElementById(contentId).innerHTML = html;
+    document.getElementById(loadingId).style.display = 'none';
+    document.getElementById(contentId).style.display = 'block';
+}
 
-    // K75A
-    html += '<tr class="table-row">';
-    html += '<td class="route-name">K75A</td>';
-    html += `<td class="time-cell">${mtrK75aData?.[0]?.time || '-'}</td>`;
-    html += `<td class="time-cell">${mtrK75aData?.[1]?.time || '-'}</td>`;
-    html += '</tr>';
+async function updateTianshui() {
+    const loadingId = 'tianshui-loading';
+    const contentId = 'tianshui-content';
+    const stationId = 'tianshui';
 
-    // K75P
-    html += '<tr class="table-row">';
-    html += '<td class="route-name">K75P</td>';
-    html += `<td class="time-cell">${mtrK75pData?.[0]?.time || '-'}</td>`;
-    html += `<td class="time-cell">${mtrK75pData?.[1]?.time || '-'}</td>`;
-    html += '</tr>';
+    document.getElementById(loadingId).style.display = 'block';
+    document.getElementById(contentId).style.display = 'none';
+    clearError(stationId);
 
-    // KMB 53
-    html += '<tr class="table-row kmb-row">';
-    html += '<td class="route-name">53</td>';
-    html += `<td class="time-cell direction-label">往荃灣</td>`;
-    html += `<td class="time-cell direction-label">往元朗</td>`;
-    html += '</tr>';
+    const trainData = await fetchMTRTrainETA('TML', 'TIS');
 
-    html += '<tr class="table-row kmb-times">';
-    html += '<td></td>';
-    const outboundTime = kmbData?.outbound?.[0]?.formattedETA || '-';
-    const outboundClass = kmbData?.outbound?.[0]?.className || '';
-    const inboundTime = kmbData?.inbound?.[0]?.formattedETA || '-';
-    const inboundClass = kmbData?.inbound?.[0]?.className || '';
-    html += `<td class="time-cell ${outboundClass}">${outboundTime}</td>`;
-    html += `<td class="time-cell ${inboundClass}">${inboundTime}</td>`;
-    html += '</tr>';
+    if (!trainData) {
+        document.getElementById(loadingId).style.display = 'none';
+        showError(stationId, '無法獲取列車數據，請稍候重試...');
+        return;
+    }
+
+    let html = '<table class="bus-table"><tbody>';
+    html += '<tr class="table-header"><td></td><td>最快</td><td>下一班</td></tr>';
+
+    const upTrains = trainData.UP || [];
+    const downTrains = trainData.DOWN || [];
+
+    html += `<tr class="table-row"><td class="route-name">往屯門 ⬆</td><td class="time-cell">${upTrains[0]?.ttnt || '-'} 分</td><td class="time-cell">${upTrains[1]?.ttnt || '-'} 分</td></tr>`;
+    html += `<tr class="table-row"><td class="route-name">往烏溪沙 ⬇</td><td class="time-cell">${downTrains[0]?.ttnt || '-'} 分</td><td class="time-cell">${downTrains[1]?.ttnt || '-'} 分</td></tr>`;
 
     html += '</tbody></table>';
 
-    busContainer.innerHTML = html;
-    loadingContainer.style.display = 'none';
-    busContainer.style.display = 'block';
-
-    lastUpdatedSpan.textContent = formatLastUpdated(new Date());
+    document.getElementById(contentId).innerHTML = html;
+    document.getElementById(loadingId).style.display = 'none';
+    document.getElementById(contentId).style.display = 'block';
 }
 
 window.addEventListener('load', function () {
-    updateBusDisplay();
+    updateAllStations();
+    document.getElementById('lastUpdated').textContent = formatLastUpdated(new Date());
     updateInterval = setInterval(() => {
-        updateBusDisplay();
+        updateAllStations();
+        document.getElementById('lastUpdated').textContent = formatLastUpdated(new Date());
     }, 10000);
 });
 
