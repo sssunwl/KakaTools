@@ -113,7 +113,7 @@ async function fetchMTRBusETA(routeName, targetStopId) {
         if (!targetStop || !targetStop.bus) return null;
 
         return targetStop.bus
-            .slice(0, 2)
+            .slice(0, 3)
             .map(bus => ({
                 time: bus.departureTimeText || '-',
                 secondsToGo: parseInt(bus.departureTimeInSecond) || 0
@@ -150,12 +150,12 @@ async function fetchMTRTrainETA(line, station) {
         if (!trains) return null;
 
         return {
-            UP: (trains.UP || []).slice(0, 2).map(t => ({
+            UP: (trains.UP || []).slice(0, 3).map(t => ({
                 ttnt: t.ttnt,
                 dest: t.dest,
                 plat: t.plat
             })),
-            DOWN: (trains.DOWN || []).slice(0, 2).map(t => ({
+            DOWN: (trains.DOWN || []).slice(0, 3).map(t => ({
                 ttnt: t.ttnt,
                 dest: t.dest,
                 plat: t.plat
