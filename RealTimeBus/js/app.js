@@ -39,79 +39,48 @@ async function updateBusDisplay() {
         return;
     }
 
-    // 構建 3 欄 HTML
-    let html = '<div class="bus-grid">';
+    // 構建表格 HTML
+    let html = '<table class="bus-table"><tbody>';
 
-    // 第 1 欄：KMB 53
-    html += '<div class="route-column">';
-    html += '<div class="route-title">📌 KMB 53</div>';
-    if (kmbData?.outbound?.length > 0) {
-        html += '<div style="font-size: 12px; color: #aaa; margin-bottom: 5px;">往荃灣</div>';
-        html += `<div class="route-item">
-            <div class="route-item-label">最快</div>
-            <div class="route-item-time ${kmbData.outbound[0].className}">${kmbData.outbound[0].formattedETA}</div>
-        </div>`;
-        if (kmbData.outbound.length > 1) {
-            html += `<div class="route-item">
-                <div class="route-item-label">下一班</div>
-                <div class="route-item-time">${kmbData.outbound[1].formattedETA}</div>
-            </div>`;
-        }
-    }
-    if (kmbData?.inbound?.length > 0) {
-        html += '<div style="font-size: 12px; color: #aaa; margin-top: 15px; margin-bottom: 5px;">往元朗</div>';
-        html += `<div class="route-item">
-            <div class="route-item-label">最快</div>
-            <div class="route-item-time ${kmbData.inbound[0].className}">${kmbData.inbound[0].formattedETA}</div>
-        </div>`;
-        if (kmbData.inbound.length > 1) {
-            html += `<div class="route-item">
-                <div class="route-item-label">下一班</div>
-                <div class="route-item-time">${kmbData.inbound[1].formattedETA}</div>
-            </div>`;
-        }
-    }
-    html += '</div>';
+    // 表頭
+    html += '<tr class="table-header">';
+    html += '<td></td>';
+    html += '<td>最快</td>';
+    html += '<td>下一班</td>';
+    html += '</tr>';
 
-    // 第 2 欄：K75A
-    html += '<div class="route-column">';
-    html += '<div class="route-title">🚌 K75A</div>';
-    if (mtrK75aData?.length > 0) {
-        html += `<div class="route-item">
-            <div class="route-item-label">最快</div>
-            <div class="route-item-time">${mtrK75aData[0].time}</div>
-        </div>`;
-        if (mtrK75aData.length > 1) {
-            html += `<div class="route-item">
-                <div class="route-item-label">下一班</div>
-                <div class="route-item-time">${mtrK75aData[1].time}</div>
-            </div>`;
-        }
-    } else {
-        html += '<div style="color: #aaa;">暫無班次</div>';
-    }
-    html += '</div>';
+    // K75A
+    html += '<tr class="table-row">';
+    html += '<td class="route-name">K75A</td>';
+    html += `<td class="time-cell">${mtrK75aData?.[0]?.time || '-'}</td>`;
+    html += `<td class="time-cell">${mtrK75aData?.[1]?.time || '-'}</td>`;
+    html += '</tr>';
 
-    // 第 3 欄：K75P
-    html += '<div class="route-column">';
-    html += '<div class="route-title">🚌 K75P</div>';
-    if (mtrK75pData?.length > 0) {
-        html += `<div class="route-item">
-            <div class="route-item-label">最快</div>
-            <div class="route-item-time">${mtrK75pData[0].time}</div>
-        </div>`;
-        if (mtrK75pData.length > 1) {
-            html += `<div class="route-item">
-                <div class="route-item-label">下一班</div>
-                <div class="route-item-time">${mtrK75pData[1].time}</div>
-            </div>`;
-        }
-    } else {
-        html += '<div style="color: #aaa;">暫無班次</div>';
-    }
-    html += '</div>';
+    // K75P
+    html += '<tr class="table-row">';
+    html += '<td class="route-name">K75P</td>';
+    html += `<td class="time-cell">${mtrK75pData?.[0]?.time || '-'}</td>`;
+    html += `<td class="time-cell">${mtrK75pData?.[1]?.time || '-'}</td>`;
+    html += '</tr>';
 
-    html += '</div>';
+    // KMB 53
+    html += '<tr class="table-row kmb-row">';
+    html += '<td class="route-name">53</td>';
+    html += `<td class="time-cell direction-label">往荃灣</td>`;
+    html += `<td class="time-cell direction-label">往元朗</td>`;
+    html += '</tr>';
+
+    html += '<tr class="table-row kmb-times">';
+    html += '<td></td>';
+    const outboundTime = kmbData?.outbound?.[0]?.formattedETA || '-';
+    const outboundClass = kmbData?.outbound?.[0]?.className || '';
+    const inboundTime = kmbData?.inbound?.[0]?.formattedETA || '-';
+    const inboundClass = kmbData?.inbound?.[0]?.className || '';
+    html += `<td class="time-cell ${outboundClass}">${outboundTime}</td>`;
+    html += `<td class="time-cell ${inboundClass}">${inboundTime}</td>`;
+    html += '</tr>';
+
+    html += '</tbody></table>';
 
     busContainer.innerHTML = html;
     loadingContainer.style.display = 'none';

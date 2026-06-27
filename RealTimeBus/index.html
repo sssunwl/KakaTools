@@ -89,55 +89,79 @@
             display: none !important;
         }
 
-        .bus-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
+        .bus-table {
+            width: 100%;
+            border-collapse: collapse;
             margin-bottom: 20px;
-        }
-
-        .route-column {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .route-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #667eea;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #334455;
-        }
-
-        .route-item {
             background: #1a2749;
             border: 1px solid #334455;
             border-radius: 8px;
-            padding: 12px 15px;
+            overflow: hidden;
         }
 
-        .route-item-label {
-            font-size: 12px;
+        .table-header {
+            background: #334455;
             color: #aaa;
-            margin-bottom: 5px;
+            font-weight: 600;
+            text-align: center;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .route-item-time {
-            font-size: 18px;
+        .table-header td {
+            padding: 12px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .table-row td {
+            padding: 15px 12px;
+            text-align: center;
+            border-bottom: 1px solid #334455;
+        }
+
+        .table-row:last-child td {
+            border-bottom: none;
+        }
+
+        .route-name {
             font-weight: 700;
+            font-size: 16px;
+            color: #667eea;
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .time-cell {
+            font-size: 16px;
+            font-weight: 600;
             color: #51cf66;
         }
 
-        .route-item-time.soon {
+        .time-cell.soon {
             color: #ff922b;
         }
 
-        .route-item-time.arriving {
+        .time-cell.arriving {
             color: #e74c3c;
             animation: pulse 1s infinite;
+        }
+
+        .direction-label {
+            font-size: 12px;
+            color: #aaa;
+            text-transform: none;
+            font-weight: 500;
+        }
+
+        .kmb-row .route-name {
+            padding-top: 20px;
+        }
+
+        .kmb-times td {
+            padding-bottom: 20px;
+            font-size: 18px;
+            font-weight: 700;
         }
 
         .direction {
@@ -278,8 +302,16 @@
                 padding: 20px;
             }
 
-            .bus-grid {
-                grid-template-columns: 1fr;
+            .bus-table {
+                font-size: 14px;
+            }
+
+            .table-row td {
+                padding: 12px 8px;
+            }
+
+            .route-name {
+                padding-left: 10px;
             }
 
             .bus-item {
@@ -319,7 +351,7 @@
                     <p>正在加載實時數據...</p>
                 </div>
 
-                <div id="busContainer" class="bus-grid" style="display: none;"></div>
+                <div id="busContainer" style="display: none;"></div>
             </div>
 
             <div class="last-updated">
