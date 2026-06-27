@@ -82,7 +82,7 @@ async function updateXinshengcun() {
 
     // 往荃灣
     html += `<tr class="table-row kmb-53">
-        <td class="direction-label">📤 往荃灣</td>
+        <td class="direction-label"> 往荃灣</td>
         <td class="time-cell ${outbound?.className || ''}">${outbound?.formattedETA || '-'}</td>
         <td class="time-cell ${outbound2?.className || ''}">${outbound2?.formattedETA || '-'}</td>
         <td class="time-cell ${outbound3?.className || ''}">${outbound3?.formattedETA || '-'}</td>
@@ -90,7 +90,7 @@ async function updateXinshengcun() {
 
     // 往元朗
     html += `<tr class="table-row kmb-53">
-        <td class="direction-label">📥 往元朗</td>
+        <td class="direction-label"> 往元朗</td>
         <td class="time-cell ${inbound?.className || ''}">${inbound?.formattedETA || '-'}</td>
         <td class="time-cell ${inbound2?.className || ''}">${inbound2?.formattedETA || '-'}</td>
         <td class="time-cell ${inbound3?.className || ''}">${inbound3?.formattedETA || '-'}</td>
@@ -143,7 +143,7 @@ async function updatePingxin() {
             <td colspan="3"></td>
         </tr>`;
         html += `<tr class="table-row kmb-53">
-            <td class="direction-label">📥 往元朗形點</td>
+            <td class="direction-label"> 往元朗形點</td>
             <td class="time-cell ${route53[0] ? getETAClassKMB(route53[0].eta) : ''}">${route53[0] ? formatTime((new Date(route53[0].eta) - new Date()) / 1000) : '-'}</td>
             <td class="time-cell ${route53[1] ? getETAClassKMB(route53[1].eta) : ''}">${route53[1] ? formatTime((new Date(route53[1].eta) - new Date()) / 1000) : '-'}</td>
             <td class="time-cell ${route53[2] ? getETAClassKMB(route53[2].eta) : ''}">${route53[2] ? formatTime((new Date(route53[2].eta) - new Date()) / 1000) : '-'}</td>
@@ -155,7 +155,7 @@ async function updatePingxin() {
             <td colspan="3"></td>
         </tr>`;
         html += `<tr class="table-row kmb-53">
-            <td class="direction-label">📤 往上水</td>
+            <td class="direction-label"> 往上水</td>
             <td class="time-cell ${route276[0] ? getETAClassKMB(route276[0].eta) : ''}">${route276[0] ? formatTime((new Date(route276[0].eta) - new Date()) / 1000) : '-'}</td>
             <td class="time-cell ${route276[1] ? getETAClassKMB(route276[1].eta) : ''}">${route276[1] ? formatTime((new Date(route276[1].eta) - new Date()) / 1000) : '-'}</td>
             <td class="time-cell ${route276[2] ? getETAClassKMB(route276[2].eta) : ''}">${route276[2] ? formatTime((new Date(route276[2].eta) - new Date()) / 1000) : '-'}</td>
@@ -163,11 +163,11 @@ async function updatePingxin() {
 
         // K65
         html += `<tr class="table-row train-badge">
-            <td class="route-badge badge-up">🚌 K65</td>
+            <td class="route-badge badge-up">K65</td>
             <td colspan="3"></td>
         </tr>`;
         html += `<tr class="table-row train-mtr">
-            <td class="direction-label">📤 往流浮山</td>
+            <td class="direction-label"> 往流浮山</td>
             <td class="time-cell">${k65Buses[0]?.departureTimeText || '-'}</td>
             <td class="time-cell">${k65Buses[1]?.departureTimeText || '-'}</td>
             <td class="time-cell">${k65Buses[2]?.departureTimeText || '-'}</td>
@@ -218,13 +218,13 @@ async function updateTianshui() {
 
     // 屯馬
     html += `<tr class="table-row train-badge">
-        <td class="route-badge badge-up">🚆 屯馬</td>
+        <td class="route-badge badge-up">屯馬線</td>
         <td colspan="3"></td>
     </tr>`;
 
     // 往烏溪沙
     html += `<tr class="table-row train-mtr">
-        <td class="direction-label">📥 往烏溪沙</td>
+        <td class="direction-label"> 往烏溪沙</td>
         <td class="time-cell">${downTrains[0]?.ttnt || '-'} 分</td>
         <td class="time-cell">${downTrains[1]?.ttnt || '-'} 分</td>
         <td class="time-cell">${downTrains[2]?.ttnt || '-'} 分</td>
@@ -232,7 +232,7 @@ async function updateTianshui() {
 
     // 往屯門
     html += `<tr class="table-row train-mtr">
-        <td class="direction-label">📤 往屯門</td>
+        <td class="direction-label"> 往屯門</td>
         <td class="time-cell">${upTrains[0]?.ttnt || '-'} 分</td>
         <td class="time-cell">${upTrains[1]?.ttnt || '-'} 分</td>
         <td class="time-cell">${upTrains[2]?.ttnt || '-'} 分</td>
