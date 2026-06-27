@@ -23,8 +23,8 @@ function toggleStation(stationId) {
 
 async function updateAllStations() {
     updateXinshengcun();
-    updatePingxin();
     updateTianshui();
+    updatePingxin();
 }
 
 async function updateXinshengcun() {
@@ -113,44 +113,84 @@ async function updatePingxin() {
     clearError(stationId);
 
     try {
-        const response = await fetch('https://data.etabus.gov.hk/v1/transport/kmb/stop-eta/2280D10BC985E036');
-        if (!response.ok) throw new Error('API 失敗');
+        // 並行獲取 KMB 和港鐵巴士數據
+        const [kmbRes, k65Res] = await Promise.all([
+            fetch('https://data.etabus.gov.hk/v1/transport/kmb/stop-eta/2280D10BC985E036'),
+            fetch('https://rt.data.gov.hk/v1/transport/mtr/bus/getSchedule', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ language: 'zh', routeName: 'K65' })
+            })
+        ]);
 
-        const data = await response.json();
-        const route53 = (data.data || []).filter(item => String(item.route) === '53');
+        const kmbData = await kmbRes.json();
+        const k65Data = await k65Res.json();
 
-        if (!route53.length) {
-            document.getElementById(loadingId).style.display = 'none';
-            showError(stationId, '暫無班次數據');
-            return;
-        }
+        // 解析 KMB 53 和 276
+        const route53 = (kmbData.data || []).filter(item => String(item.route) === '53' && item.dir === 'I').slice(0, 3);
+        const route276 = (kmbData.data || []).filter(item => String(item.route) === '276' && item.dir === 'O').slice(0, 3);
 
-        const buses = route53.slice(0, 3).map(bus => ({
-            time: formatTime((new Date(bus.eta) - new Date()) / 1000),
-            className: getETAClass((new Date(bus.eta) - new Date()) / 1000)
-        }));
+        // 解析 K65
+        const k65Stop = (k65Data.busStop || []).find(s => s.busStopId === 'K65-U090');
+        const k65Buses = (k65Stop?.bus || []).slice(0, 3);
 
         let html = '<table class="bus-table"><tbody>';
         html += '<tr class="table-header"><td></td><td>最快</td><td>下一班</td><td>下下班</td></tr>';
+
+        // 53
         html += `<tr class="table-row kmb-badge">
             <td class="route-badge badge-53">53</td>
             <td colspan="3"></td>
         </tr>`;
         html += `<tr class="table-row kmb-53">
-            <td class="direction-label">📥 往荃灣</td>
-            <td class="time-cell ${buses[0]?.className || ''}">${buses[0]?.time || '-'}</td>
-            <td class="time-cell ${buses[1]?.className || ''}">${buses[1]?.time || '-'}</td>
-            <td class="time-cell ${buses[2]?.className || ''}">${buses[2]?.time || '-'}</td>
+            <td class="direction-label">📥 往元朗形點</td>
+            <td class="time-cell ${route53[0] ? getETAClassKMB(route53[0].eta) : ''}">${route53[0] ? formatTime((new Date(route53[0].eta) - new Date()) / 1000) : '-'}</td>
+            <td class="time-cell ${route53[1] ? getETAClassKMB(route53[1].eta) : ''}">${route53[1] ? formatTime((new Date(route53[1].eta) - new Date()) / 1000) : '-'}</td>
+            <td class="time-cell ${route53[2] ? getETAClassKMB(route53[2].eta) : ''}">${route53[2] ? formatTime((new Date(route53[2].eta) - new Date()) / 1000) : '-'}</td>
         </tr>`;
+
+        // 276
+        html += `<tr class="table-row kmb-badge">
+            <td class="route-badge" style="background: linear-gradient(135deg, #40e0d0 0%, #2bb8aa 100%);">276</td>
+            <td colspan="3"></td>
+        </tr>`;
+        html += `<tr class="table-row kmb-53">
+            <td class="direction-label">📤 往上水</td>
+            <td class="time-cell ${route276[0] ? getETAClassKMB(route276[0].eta) : ''}">${route276[0] ? formatTime((new Date(route276[0].eta) - new Date()) / 1000) : '-'}</td>
+            <td class="time-cell ${route276[1] ? getETAClassKMB(route276[1].eta) : ''}">${route276[1] ? formatTime((new Date(route276[1].eta) - new Date()) / 1000) : '-'}</td>
+            <td class="time-cell ${route276[2] ? getETAClassKMB(route276[2].eta) : ''}">${route276[2] ? formatTime((new Date(route276[2].eta) - new Date()) / 1000) : '-'}</td>
+        </tr>`;
+
+        // K65
+        html += `<tr class="table-row train-badge">
+            <td class="route-badge badge-up">🚌 K65</td>
+            <td colspan="3"></td>
+        </tr>`;
+        html += `<tr class="table-row train-mtr">
+            <td class="direction-label">📤 往流浮山</td>
+            <td class="time-cell">${k65Buses[0]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${k65Buses[1]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${k65Buses[2]?.departureTimeText || '-'}</td>
+        </tr>`;
+
         html += '</tbody></table>';
 
         document.getElementById(contentId).innerHTML = html;
         document.getElementById(loadingId).style.display = 'none';
         document.getElementById(contentId).style.display = 'block';
     } catch (error) {
+        console.error('屏欣苑查詢失敗:', error);
         document.getElementById(loadingId).style.display = 'none';
         showError(stationId, '無法獲取班次數據');
     }
+}
+
+function getETAClassKMB(etaString) {
+    const seconds = (new Date(etaString) - new Date()) / 1000;
+    const minutes = Math.round(seconds / 60);
+    if (minutes === 0) return 'arriving';
+    if (minutes <= 3) return 'soon';
+    return '';
 }
 
 async function updateTianshui() {
