@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RealTimeBus - 新生村 53 線實時到站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #0f3460;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 40px 30px;
+            background: #0f3460;
+        }
+
+        .station-info {
+            background: #1a2749;
+            border: 2px solid #334455;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .station-details h2 {
+            font-size: 24px;
+            color: #e0e0e0;
+            margin-bottom: 5px;
+        }
+
+        .station-details p {
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .route-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .bus-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .direction {
+            margin-bottom: 25px;
+        }
+
+        .direction-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #334455;
+        }
+
+        .bus-item {
+            background: #1a2749;
+            border: 1px solid #334455;
+            border-radius: 8px;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .bus-item:hover {
+            border-color: #667eea;
+            background: #2a3a59;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .bus-time {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .time-slot {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .eta {
+            font-size: 18px;
+            font-weight: 700;
+            color: #51cf66;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        .eta.soon {
+            color: #ff922b;
+        }
+
+        .eta.arriving {
+            color: #e74c3c;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .time-label {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #aaa;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #334455;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #2a1a1a;
+            border-left: 4px solid #e74c3c;
+            color: #ff6b6b;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .last-updated {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #334455;
+        }
+
+        footer {
+            border-top: 1px solid #334455;
+            padding: 20px 30px;
+            background: #0a1628;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 24px;
+            }
+
+            .station-info {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            main {
+                padding: 20px;
+            }
+
+            .bus-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .time-slot {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .eta {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚌 RealTimeBus</h1>
+            <p>新生村 KMB 53 線實時到站時間</p>
+        </header>
+
+        <main>
+            <div class="station-info">
+                <div class="station-details">
+                    <h2>📍 新生村</h2>
+                    <p>KMB Route 53</p>
+                </div>
+                <div class="route-badge">53</div>
+            </div>
+
+            <div id="errorContainer"></div>
+
+            <div id="loadingContainer" class="loading">
+                <div class="spinner"></div>
+                <p>正在加載實時數據...</p>
+            </div>
+
+            <div id="busContainer" class="bus-list" style="display: none;"></div>
+
+            <div class="last-updated">
+                ⏱️ 每 10 秒自動更新 | 最後更新：<span id="lastUpdated">-</span>
+            </div>
+        </main>
+
+        <footer>
+            💡 數據來源：KMB 實時到站 API | 此工具在您的瀏覽器本機運行，不儲存任何個人數據。
+        </footer>
+    </div>
+
+    <script src="js/bus-api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
