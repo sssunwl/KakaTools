@@ -38,27 +38,13 @@ async function fetchStopETA(stopId) {
     if (!stopId) return null;
 
     try {
-        const url = `${KMB_API_BASE}/stop-eta/${stopId}`;
-        console.log('Fetching:', url);
-
-        const response = await fetch(url);
-        if (!response.ok) {
-            console.warn(`API 響應: ${response.status}`);
-            return null;
-        }
+        const response = await fetch(`${KMB_API_BASE}/stop-eta/${stopId}`);
+        if (!response.ok) return null;
 
         const data = await response.json();
-        console.log(`API 返回 ${stopId}:`, data);
-
-        if (!Array.isArray(data.data)) {
-            console.warn(`data.data 不是陣列:`, data);
-            return null;
-        }
+        if (!Array.isArray(data.data)) return null;
 
         const filtered = data.data.filter(item => String(item.route) === String(BUS_CONFIG.route));
-        console.log(`篩選條件: route === ${BUS_CONFIG.route}`)
-        console.log(`全部項目的 route:`, data.data.map(x => x.route))
-        console.log(`Route ${BUS_CONFIG.route} 的班次:`, filtered);
 
         return filtered
             .map(item => {
@@ -104,4 +90,37 @@ function formatLastUpdated(date) {
         minute: '2-digit',
         second: '2-digit'
     });
+}
+
+// 港鐵巴士 API
+const MTR_BUS_API = 'https://rt.data.gov.hk/v1/transport/mtr/bus/getSchedule';
+
+async function fetchMTRBusETA(routeName, targetStopId) {
+    if (!routeName || !targetStopId) return null;
+
+    try {
+        const response = await fetch(MTR_BUS_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ language: 'zh', routeName: routeName })
+        });
+
+        if (!response.ok) return null;
+
+        const data = await response.json();
+        const targetStop = (data.busStop || []).find(s => s.busStopId === targetStopId);
+
+        if (!targetStop || !targetStop.bus) return null;
+
+        return targetStop.bus
+            .slice(0, 2)
+            .map(bus => ({
+                time: bus.departureTimeText || '-',
+                secondsToGo: parseInt(bus.departureTimeInSecond) || 0
+            }))
+            .filter(bus => bus.secondsToGo >= 0);
+    } catch (error) {
+        console.error(`MTR Bus ${routeName} ETA fetch failed:`, error);
+        return null;
+    }
 }
