@@ -38,17 +38,27 @@ async function fetchStopETA(stopId) {
     if (!stopId) return null;
 
     try {
-        const response = await fetch(`${KMB_API_BASE}/stop-eta/${stopId}`);
+        const url = `${KMB_API_BASE}/stop-eta/${stopId}`;
+        console.log('Fetching:', url);
+
+        const response = await fetch(url);
         if (!response.ok) {
             console.warn(`API 響應: ${response.status}`);
             return null;
         }
 
         const data = await response.json();
-        if (!Array.isArray(data.data)) return null;
+        console.log(`API 返回 ${stopId}:`, data);
 
-        return data.data
-            .filter(item => item.route === BUS_CONFIG.route)
+        if (!Array.isArray(data.data)) {
+            console.warn(`data.data 不是陣列:`, data);
+            return null;
+        }
+
+        const filtered = data.data.filter(item => item.route === BUS_CONFIG.route);
+        console.log(`Route ${BUS_CONFIG.route} 的班次:`, filtered);
+
+        return filtered
             .map(item => {
                 const seconds = calculateSecondsUntilETA(item.eta);
                 return {
