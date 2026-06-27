@@ -87,9 +87,10 @@
         }
 
         header h1 {
-            font-size: 32px;
-            margin-bottom: 8px;
+            font-size: 36px;
+            margin-bottom: 10px;
             font-weight: 700;
+            letter-spacing: 1px;
         }
 
         header p {
@@ -98,25 +99,35 @@
         }
 
         main {
-            padding: 40px 30px;
+            padding: 40px 36px;
             background: white;
         }
 
         .station-header {
-            background: linear-gradient(135deg, #0f766e 0%, #065f46 100%);
+            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
             color: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            padding: 22px 24px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            margin-top: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .station-header:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            transform: translateY(-1px);
         }
 
         .station-header h2 {
-            font-size: 24px;
+            font-size: 26px;
             margin: 0;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .toggle-btn {
@@ -176,26 +187,27 @@
         .bus-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             background: white;
             border: 1px solid #e5e7eb;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
             table-layout: fixed;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .table-header {
-            background: #f3f4f6;
-            color: #374151;
+            background: #f9fafb;
+            color: #6b7280;
             font-weight: 700;
             text-align: center;
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
         }
 
         .table-header td {
-            padding: 14px;
+            padding: 16px 12px;
             border: none;
         }
 
@@ -244,7 +256,7 @@
 
         .route-badge {
             font-weight: 700;
-            font-size: 36px;
+            font-size: 38px;
             padding: 14px 16px !important;
             border-radius: 8px;
             text-align: center;
@@ -255,6 +267,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+            transition: all 0.2s ease;
+        }
+
+        .route-badge:hover {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
         }
 
         .badge-k75a {
@@ -337,8 +355,9 @@
             padding: 12px 16px !important;
             border: none !important;
             text-align: center;
-            background: #f3f4f6;
+            background: #f9fafb;
             width: 100%;
+            transition: all 0.2s ease;
         }
 
         .mtr-row {
@@ -541,20 +560,22 @@
 
         .last-updated {
             text-align: center;
-            font-size: 12px;
-            color: #666;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #334455;
+            font-size: 13px;
+            color: #9ca3af;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            font-weight: 500;
         }
 
         footer {
             border-top: 1px solid #e5e7eb;
-            padding: 20px 30px;
-            background: #f9fafb;
-            font-size: 12px;
+            padding: 20px 36px;
+            background: #fafbfc;
+            font-size: 13px;
             color: #9ca3af;
             text-align: center;
+            font-weight: 500;
         }
 
         @media (max-width: 768px) {
