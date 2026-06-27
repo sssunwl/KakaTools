@@ -104,6 +104,14 @@
             display: block;
         }
 
+        .table-note {
+            font-size: 12px;
+            color: #999;
+            text-align: right;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
         .bus-table {
             width: 100%;
             border-collapse: collapse;
@@ -131,15 +139,14 @@
         }
 
         .table-header td:nth-child(1) {
-            width: 35%;
+            width: 25%;
+            text-align: left;
         }
 
-        .table-header td:nth-child(2) {
-            width: 32.5%;
-        }
-
-        .table-header td:nth-child(3) {
-            width: 32.5%;
+        .table-header td:nth-child(2),
+        .table-header td:nth-child(3),
+        .table-header td:nth-child(4) {
+            width: 25%;
         }
 
         .table-row td {
@@ -151,16 +158,14 @@
         }
 
         .table-row td:nth-child(1) {
-            width: 35%;
+            width: 25%;
             text-align: left;
         }
 
-        .table-row td:nth-child(2) {
-            width: 32.5%;
-        }
-
-        .table-row td:nth-child(3) {
-            width: 32.5%;
+        .table-row td:nth-child(2),
+        .table-row td:nth-child(3),
+        .table-row td:nth-child(4) {
+            width: 25%;
         }
 
         .table-row:last-child td {
@@ -443,6 +448,7 @@
                     <p>正在加載巴士數據...</p>
                 </div>
                 <div id="xinshengcun-content" style="display: none;"></div>
+                <div class="table-note">表格：最快班次 / 下一班 / 下下班</div>
             </div>
 
             <!-- 天水圍站 -->
