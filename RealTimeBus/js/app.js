@@ -23,6 +23,7 @@ function toggleStation(stationId) {
 
 async function updateAllStations() {
     updateXinshengcun();
+    updatePingxin();
     updateTianshui();
 }
 
@@ -100,6 +101,56 @@ async function updateXinshengcun() {
     document.getElementById(contentId).innerHTML = html;
     document.getElementById(loadingId).style.display = 'none';
     document.getElementById(contentId).style.display = 'block';
+}
+
+async function updatePingxin() {
+    const loadingId = 'pingxin-loading';
+    const contentId = 'pingxin-content';
+    const stationId = 'pingxin';
+
+    document.getElementById(loadingId).style.display = 'block';
+    document.getElementById(contentId).style.display = 'none';
+    clearError(stationId);
+
+    try {
+        const response = await fetch('https://data.etabus.gov.hk/v1/transport/kmb/stop-eta/2280D10BC985E036');
+        if (!response.ok) throw new Error('API 失敗');
+
+        const data = await response.json();
+        const route53 = (data.data || []).filter(item => String(item.route) === '53');
+
+        if (!route53.length) {
+            document.getElementById(loadingId).style.display = 'none';
+            showError(stationId, '暫無班次數據');
+            return;
+        }
+
+        const buses = route53.slice(0, 3).map(bus => ({
+            time: formatTime((new Date(bus.eta) - new Date()) / 1000),
+            className: getETAClass((new Date(bus.eta) - new Date()) / 1000)
+        }));
+
+        let html = '<table class="bus-table"><tbody>';
+        html += '<tr class="table-header"><td></td><td>最快</td><td>下一班</td><td>下下班</td></tr>';
+        html += `<tr class="table-row kmb-badge">
+            <td class="route-badge badge-53">53</td>
+            <td colspan="3"></td>
+        </tr>`;
+        html += `<tr class="table-row kmb-53">
+            <td class="direction-label">📥 往荃灣</td>
+            <td class="time-cell ${buses[0]?.className || ''}">${buses[0]?.time || '-'}</td>
+            <td class="time-cell ${buses[1]?.className || ''}">${buses[1]?.time || '-'}</td>
+            <td class="time-cell ${buses[2]?.className || ''}">${buses[2]?.time || '-'}</td>
+        </tr>`;
+        html += '</tbody></table>';
+
+        document.getElementById(contentId).innerHTML = html;
+        document.getElementById(loadingId).style.display = 'none';
+        document.getElementById(contentId).style.display = 'block';
+    } catch (error) {
+        document.getElementById(loadingId).style.display = 'none';
+        showError(stationId, '無法獲取班次數據');
+    }
 }
 
 async function updateTianshui() {

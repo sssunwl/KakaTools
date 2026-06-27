@@ -451,6 +451,21 @@
                 <div class="table-note">表格：最快班次 / 下一班 / 下下班</div>
             </div>
 
+            <!-- 屏欣苑 -->
+            <div class="station-header" onclick="toggleStation('pingxin')">
+                <h2>📍 屏欣苑</h2>
+                <button class="toggle-btn" data-station="pingxin">▼</button>
+            </div>
+
+            <div id="pingxin" class="station-container" style="display: block;">
+                <div id="pingxin-error" class="error-container"></div>
+                <div id="pingxin-loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>正在加載巴士數據...</p>
+                </div>
+                <div id="pingxin-content" style="display: none;"></div>
+            </div>
+
             <!-- 天水圍站 -->
             <div class="station-header" onclick="toggleStation('tianshui')">
                 <h2>🚆 天水圍站</h2>
