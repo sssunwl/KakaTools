@@ -59,9 +59,9 @@ async function updateBusDisplay() {
     }
     html += '</div>';
 
-    // 回程
+    // 往元朗
     html += '<div class="direction">';
-    html += '<div class="direction-title">📥 回程方向</div>';
+    html += '<div class="direction-title">📥 往元朗 (形點)</div>';
     if (busData.inbound.length > 0) {
         html += busData.inbound.map(bus => `
             <div class="bus-item">
