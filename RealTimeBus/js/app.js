@@ -64,18 +64,17 @@ async function updateXinshengcun() {
         <td class="time-cell">${mtrK75pData?.[1]?.time || '-'}</td>
     </tr>`;
 
-    // KMB 53 方向標籤
+    // KMB 53 方向標籤（53 rowspan=2）
+    const outbound = kmbData?.outbound?.[0];
+    const inbound = kmbData?.inbound?.[0];
     html += `<tr class="table-row kmb-direction">
-        <td class="route-badge badge-53">53</td>
+        <td class="route-badge badge-53" rowspan="2">53</td>
         <td class="direction-label">📤 往荃灣</td>
         <td class="direction-label">📥 往元朗</td>
     </tr>`;
 
     // KMB 53 時間
-    const outbound = kmbData?.outbound?.[0];
-    const inbound = kmbData?.inbound?.[0];
     html += `<tr class="table-row kmb-times">
-        <td></td>
         <td class="time-cell ${outbound?.className || ''}">${outbound?.formattedETA || '-'}</td>
         <td class="time-cell ${inbound?.className || ''}">${inbound?.formattedETA || '-'}</td>
     </tr>`;
@@ -110,22 +109,21 @@ async function updateTianshui() {
     const upTrains = trainData.UP || [];
     const downTrains = trainData.DOWN || [];
 
+    // 屯馬（rowspan=3）
     html += `<tr class="table-row train-row">
-        <td class="route-badge badge-up">🚆 屯馬</td>
-        <td class="direction-label">📤 往屯門</td>
+        <td class="route-badge badge-up" rowspan="3">🚆 屯馬</td>
         <td class="direction-label">📥 往烏溪沙</td>
+        <td class="time-cell">${downTrains[0]?.ttnt || '-'} 分</td>
+    </tr>`;
+
+    html += `<tr class="table-row train-direction">
+        <td class="direction-label">📤 往屯門</td>
+        <td class="time-cell">${upTrains[0]?.ttnt || '-'} 分</td>
     </tr>`;
 
     html += `<tr class="table-row train-times">
         <td></td>
-        <td class="time-cell">${upTrains[0]?.ttnt || '-'} 分</td>
-        <td class="time-cell">${downTrains[0]?.ttnt || '-'} 分</td>
-    </tr>`;
-
-    html += `<tr class="table-row train-times-2">
-        <td></td>
         <td class="time-cell">${upTrains[1]?.ttnt || '-'} 分</td>
-        <td class="time-cell">${downTrains[1]?.ttnt || '-'} 分</td>
     </tr>`;
 
     html += '</tbody></table>';

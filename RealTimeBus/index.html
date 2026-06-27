@@ -133,10 +133,17 @@
             padding: 15px 12px;
             text-align: center;
             border-bottom: 1px solid #334455;
+            vertical-align: middle;
         }
 
         .table-row:last-child td {
             border-bottom: none;
+        }
+
+        /* 修復 rowspan 行的邊界 */
+        .kmb-direction td:first-child,
+        .train-row td:first-child {
+            border-right: 1px solid #334455;
         }
 
         .route-name {
@@ -156,6 +163,7 @@
             color: white;
             width: fit-content;
             margin: auto;
+            vertical-align: middle;
         }
 
         .badge-k75a {
@@ -195,6 +203,9 @@
             text-transform: none;
             font-weight: 600;
             letter-spacing: 0.5px;
+            line-height: 1.2;
+            padding: 4px 12px !important;
+            border-bottom: none !important;
         }
 
         .mtr-row {
@@ -203,32 +214,59 @@
 
         .kmb-direction {
             background: rgba(102, 126, 234, 0.05);
-            padding-top: 10px;
+            border-bottom: none;
+        }
+
+        .kmb-direction td:nth-child(n+2) {
+            border-bottom: none;
         }
 
         .kmb-times {
             padding-bottom: 20px;
+            background: rgba(102, 126, 234, 0.05);
         }
 
         .kmb-times td {
             font-size: 18px;
             font-weight: 700;
+            border-bottom: 1px solid #334455;
+        }
+
+        .kmb-times td:last-child {
+            border-bottom: 1px solid #334455;
         }
 
         .train-row {
             background: rgba(81, 207, 102, 0.05);
-            padding-top: 10px;
+            border-bottom: none;
+        }
+
+        .train-row td:nth-child(n+2) {
+            border-bottom: none;
+        }
+
+        .train-direction {
+            background: rgba(81, 207, 102, 0.05);
+            border-bottom: none;
+        }
+
+        .train-direction td {
+            border-bottom: none;
+            padding: 4px 12px !important;
+        }
+
+        .train-times {
+            background: rgba(81, 207, 102, 0.05);
+            padding-bottom: 20px;
         }
 
         .train-times td {
-            padding-bottom: 0;
+            border-bottom: 1px solid #334455;
             font-size: 16px;
         }
 
-        .train-times-2 td {
-            padding-top: 0;
-            padding-bottom: 20px;
-            font-size: 16px;
+        .train-times td:last-child {
+            border-bottom: 1px solid #334455;
         }
 
         .direction {
