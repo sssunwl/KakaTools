@@ -112,6 +112,7 @@
             border: 1px solid #334455;
             border-radius: 8px;
             overflow: hidden;
+            table-layout: fixed;
         }
 
         .table-header {
@@ -129,21 +130,41 @@
             border-bottom: 2px solid #667eea;
         }
 
+        .table-header td:nth-child(1) {
+            width: 35%;
+        }
+
+        .table-header td:nth-child(2) {
+            width: 32.5%;
+        }
+
+        .table-header td:nth-child(3) {
+            width: 32.5%;
+        }
+
         .table-row td {
             padding: 15px 12px;
             text-align: center;
             border-bottom: 1px solid #334455;
             vertical-align: middle;
+            word-break: break-word;
+        }
+
+        .table-row td:nth-child(1) {
+            width: 35%;
+            text-align: left;
+        }
+
+        .table-row td:nth-child(2) {
+            width: 32.5%;
+        }
+
+        .table-row td:nth-child(3) {
+            width: 32.5%;
         }
 
         .table-row:last-child td {
             border-bottom: none;
-        }
-
-        /* 修復 rowspan 行的邊界 */
-        .kmb-direction td:first-child,
-        .train-row td:first-child {
-            border-right: 1px solid #334455;
         }
 
         .route-name {
