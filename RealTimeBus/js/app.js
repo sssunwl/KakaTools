@@ -100,13 +100,14 @@ async function updateXinshengcun() {
     html += '</tbody></table>';
 
     const contentEl = document.getElementById(contentId);
+    const loadingEl = document.getElementById(loadingId);
     contentEl.style.opacity = '0';
     setTimeout(() => {
         contentEl.innerHTML = html;
-        document.getElementById(loadingId).style.display = 'none';
+        loadingEl.style.display = 'none';
         contentEl.style.display = 'block';
         contentEl.style.opacity = '1';
-    }, 150);
+    }, 100);
 }
 
 async function updateTianshengYuan() {
@@ -351,13 +352,14 @@ async function updateTianshui() {
     html += '</tbody></table>';
 
     const contentEl = document.getElementById(contentId);
+    const loadingEl = document.getElementById(loadingId);
     contentEl.style.opacity = '0';
     setTimeout(() => {
         contentEl.innerHTML = html;
-        document.getElementById(loadingId).style.display = 'none';
+        loadingEl.style.display = 'none';
         contentEl.style.display = 'block';
         contentEl.style.opacity = '1';
-    }, 150);
+    }, 100);
 }
 
 window.addEventListener('load', function () {
