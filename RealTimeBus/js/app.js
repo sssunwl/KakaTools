@@ -24,6 +24,7 @@ function toggleStation(stationId) {
 async function updateAllStations() {
     updateXinshengcun();
     updateTianshui();
+    updateTianshengYuan();
     updatePingxin();
 }
 
@@ -106,6 +107,105 @@ async function updateXinshengcun() {
         contentEl.style.display = 'block';
         contentEl.style.opacity = '1';
     }, 150);
+}
+
+async function updateTianshengYuan() {
+    const loadingId = 'tianshengyuan-loading';
+    const contentId = 'tianshengyuan-content';
+    const stationId = 'tianshengyuan';
+
+    document.getElementById(loadingId).style.display = 'block';
+    document.getElementById(contentId).style.display = 'none';
+    clearError(stationId);
+
+    try {
+        // 並行獲取 K65 和 K75A 數據
+        const [k65Res, k75aRes] = await Promise.all([
+            fetch('https://rt.data.gov.hk/v1/transport/mtr/bus/getSchedule', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ language: 'zh', routeName: 'K65' })
+            }),
+            fetch('https://rt.data.gov.hk/v1/transport/mtr/bus/getSchedule', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ language: 'zh', routeName: 'K75A' })
+            })
+        ]);
+
+        const k65Data = await k65Res.json();
+        const k75aData = await k75aRes.json();
+
+        // K65 去程（K65-U120 天盛苑/天水圍站）
+        const k65UpStop = (k65Data.busStop || []).find(s => s.busStopId === 'K65-U120');
+        const k65UpBuses = (k65UpStop?.bus || []).slice(0, 3);
+
+        // K65 回程（K65-D100 天盛苑/天水圍站）
+        const k65DownStop = (k65Data.busStop || []).find(s => s.busStopId === 'K65-D100');
+        const k65DownBuses = (k65DownStop?.bus || []).slice(0, 3);
+
+        // K75A 往洪水橋（K75A-U010）
+        const k75aUpStop = (k75aData.busStop || []).find(s => s.busStopId === 'K75A-U010');
+        const k75aUpBuses = (k75aUpStop?.bus || []).slice(0, 3);
+
+        // K75A 回程（K75A-D010）
+        const k75aDownStop = (k75aData.busStop || []).find(s => s.busStopId === 'K75A-D010');
+        const k75aDownBuses = (k75aDownStop?.bus || []).slice(0, 3);
+
+        let html = '<table class="bus-table"><tbody>';
+        html += '<tr class="table-header"><td></td><td>最快</td><td>下一班</td><td>下下班</td></tr>';
+
+        // K65
+        html += `<tr class="table-row row-k65">
+            <td class="route-badge badge-up">K65</td>
+            <td colspan="3"></td>
+        </tr>`;
+        html += `<tr class="table-row row-k65">
+            <td class="direction-label">往流浮山</td>
+            <td class="time-cell">${k65UpBuses[0]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${k65UpBuses[1]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${k65UpBuses[2]?.departureTimeText || '-'}</td>
+        </tr>`;
+        html += `<tr class="table-row row-k65">
+            <td class="direction-label">往元朗站</td>
+            <td class="time-cell">${k65DownBuses[0]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${k65DownBuses[1]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${k65DownBuses[2]?.departureTimeText || '-'}</td>
+        </tr>`;
+
+        // K75A
+        html += `<tr class="table-row row-k75a">
+            <td class="route-badge badge-k75a">K75A</td>
+            <td colspan="3"></td>
+        </tr>`;
+        html += `<tr class="table-row row-k75a">
+            <td class="direction-label">往洪水橋</td>
+            <td class="time-cell">${k75aUpBuses[0]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${k75aUpBuses[1]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${k75aUpBuses[2]?.departureTimeText || '-'}</td>
+        </tr>`;
+        html += `<tr class="table-row row-k75a">
+            <td class="direction-label">回程</td>
+            <td class="time-cell">${k75aDownBuses[0]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${k75aDownBuses[1]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${k75aDownBuses[2]?.departureTimeText || '-'}</td>
+        </tr>`;
+
+        html += '</tbody></table>';
+
+        const contentEl = document.getElementById(contentId);
+        contentEl.style.opacity = '0';
+        setTimeout(() => {
+            contentEl.innerHTML = html;
+            document.getElementById(loadingId).style.display = 'none';
+            contentEl.style.display = 'block';
+            contentEl.style.opacity = '1';
+        }, 150);
+    } catch (error) {
+        console.error('天盛苑查詢失敗:', error);
+        document.getElementById(loadingId).style.display = 'none';
+        showError(stationId, '無法獲取班次數據');
+    }
 }
 
 async function updatePingxin() {
