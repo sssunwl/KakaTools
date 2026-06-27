@@ -57,7 +57,7 @@ async function updateXinshengcun() {
         <td colspan="4" class="route-badge badge-k75a">K75A</td>
     </tr>`;
     html += `<tr class="table-row row-k75a">
-        <td class="direction-label">-</td>
+        <td class="direction-label" style="color: #0d7f94; font-weight: 600;">往洪水橋</td>
         <td class="time-cell">${mtrK75aData?.[0]?.time || '-'}</td>
         <td class="time-cell">${mtrK75aData?.[1]?.time || '-'}</td>
         <td class="time-cell">${mtrK75aData?.[2]?.time || '-'}</td>
@@ -68,7 +68,7 @@ async function updateXinshengcun() {
         <td colspan="4" class="route-badge badge-k75p">K75P</td>
     </tr>`;
     html += `<tr class="table-row row-k75p">
-        <td class="direction-label">-</td>
+        <td class="direction-label" style="color: #ff9800; font-weight: 600;">往屯門</td>
         <td class="time-cell">${mtrK75pData?.[0]?.time || '-'}</td>
         <td class="time-cell">${mtrK75pData?.[1]?.time || '-'}</td>
         <td class="time-cell">${mtrK75pData?.[2]?.time || '-'}</td>
