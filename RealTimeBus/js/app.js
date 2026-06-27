@@ -52,7 +52,7 @@ async function updateXinshengcun() {
     html += '<tr class="table-header"><td></td><td>最快</td><td>下一班</td><td>下下班</td></tr>';
 
     // K75A
-    html += `<tr class="table-row mtr-row">
+    html += `<tr class="table-row row-k75a">
         <td class="route-badge badge-k75a">K75A</td>
         <td class="time-cell">${mtrK75aData?.[0]?.time || '-'}</td>
         <td class="time-cell">${mtrK75aData?.[1]?.time || '-'}</td>
@@ -60,7 +60,7 @@ async function updateXinshengcun() {
     </tr>`;
 
     // K75P
-    html += `<tr class="table-row mtr-row">
+    html += `<tr class="table-row row-k75p">
         <td class="route-badge badge-k75p">K75P</td>
         <td class="time-cell">${mtrK75pData?.[0]?.time || '-'}</td>
         <td class="time-cell">${mtrK75pData?.[1]?.time || '-'}</td>
@@ -75,22 +75,22 @@ async function updateXinshengcun() {
     const inbound2 = kmbData?.inbound?.[1];
     const inbound3 = kmbData?.inbound?.[2];
 
-    html += `<tr class="table-row kmb-badge">
+    html += `<tr class="table-row row-53">
         <td class="route-badge badge-53">53</td>
         <td colspan="3"></td>
     </tr>`;
 
     // 往荃灣
-    html += `<tr class="table-row kmb-53">
-        <td class="direction-label"> 往荃灣</td>
+    html += `<tr class="table-row row-53">
+        <td class="direction-label">往荃灣</td>
         <td class="time-cell ${outbound?.className || ''}">${outbound?.formattedETA || '-'}</td>
         <td class="time-cell ${outbound2?.className || ''}">${outbound2?.formattedETA || '-'}</td>
         <td class="time-cell ${outbound3?.className || ''}">${outbound3?.formattedETA || '-'}</td>
     </tr>`;
 
     // 往元朗
-    html += `<tr class="table-row kmb-53">
-        <td class="direction-label"> 往元朗</td>
+    html += `<tr class="table-row row-53">
+        <td class="direction-label">往元朗</td>
         <td class="time-cell ${inbound?.className || ''}">${inbound?.formattedETA || '-'}</td>
         <td class="time-cell ${inbound2?.className || ''}">${inbound2?.formattedETA || '-'}</td>
         <td class="time-cell ${inbound3?.className || ''}">${inbound3?.formattedETA || '-'}</td>
@@ -98,9 +98,14 @@ async function updateXinshengcun() {
 
     html += '</tbody></table>';
 
-    document.getElementById(contentId).innerHTML = html;
-    document.getElementById(loadingId).style.display = 'none';
-    document.getElementById(contentId).style.display = 'block';
+    const contentEl = document.getElementById(contentId);
+    contentEl.style.opacity = '0';
+    setTimeout(() => {
+        contentEl.innerHTML = html;
+        document.getElementById(loadingId).style.display = 'none';
+        contentEl.style.display = 'block';
+        contentEl.style.opacity = '1';
+    }, 150);
 }
 
 async function updatePingxin() {
@@ -138,36 +143,36 @@ async function updatePingxin() {
         html += '<tr class="table-header"><td></td><td>最快</td><td>下一班</td><td>下下班</td></tr>';
 
         // 53
-        html += `<tr class="table-row kmb-badge">
+        html += `<tr class="table-row row-53">
             <td class="route-badge badge-53">53</td>
             <td colspan="3"></td>
         </tr>`;
-        html += `<tr class="table-row kmb-53">
-            <td class="direction-label"> 往元朗形點</td>
+        html += `<tr class="table-row row-53">
+            <td class="direction-label">往元朗形點</td>
             <td class="time-cell ${route53[0] ? getETAClassKMB(route53[0].eta) : ''}">${route53[0] ? formatTime((new Date(route53[0].eta) - new Date()) / 1000) : '-'}</td>
             <td class="time-cell ${route53[1] ? getETAClassKMB(route53[1].eta) : ''}">${route53[1] ? formatTime((new Date(route53[1].eta) - new Date()) / 1000) : '-'}</td>
             <td class="time-cell ${route53[2] ? getETAClassKMB(route53[2].eta) : ''}">${route53[2] ? formatTime((new Date(route53[2].eta) - new Date()) / 1000) : '-'}</td>
         </tr>`;
 
         // 276
-        html += `<tr class="table-row kmb-badge">
-            <td class="route-badge" style="background: linear-gradient(135deg, #40e0d0 0%, #2bb8aa 100%);">276</td>
+        html += `<tr class="table-row row-276">
+            <td class="route-badge badge-276">276</td>
             <td colspan="3"></td>
         </tr>`;
-        html += `<tr class="table-row kmb-53">
-            <td class="direction-label"> 往上水</td>
+        html += `<tr class="table-row row-276">
+            <td class="direction-label">往上水</td>
             <td class="time-cell ${route276[0] ? getETAClassKMB(route276[0].eta) : ''}">${route276[0] ? formatTime((new Date(route276[0].eta) - new Date()) / 1000) : '-'}</td>
             <td class="time-cell ${route276[1] ? getETAClassKMB(route276[1].eta) : ''}">${route276[1] ? formatTime((new Date(route276[1].eta) - new Date()) / 1000) : '-'}</td>
             <td class="time-cell ${route276[2] ? getETAClassKMB(route276[2].eta) : ''}">${route276[2] ? formatTime((new Date(route276[2].eta) - new Date()) / 1000) : '-'}</td>
         </tr>`;
 
         // K65
-        html += `<tr class="table-row train-badge">
+        html += `<tr class="table-row row-k65">
             <td class="route-badge badge-up">K65</td>
             <td colspan="3"></td>
         </tr>`;
-        html += `<tr class="table-row train-mtr">
-            <td class="direction-label"> 往流浮山</td>
+        html += `<tr class="table-row row-k65">
+            <td class="direction-label">往流浮山</td>
             <td class="time-cell">${k65Buses[0]?.departureTimeText || '-'}</td>
             <td class="time-cell">${k65Buses[1]?.departureTimeText || '-'}</td>
             <td class="time-cell">${k65Buses[2]?.departureTimeText || '-'}</td>
@@ -175,9 +180,14 @@ async function updatePingxin() {
 
         html += '</tbody></table>';
 
-        document.getElementById(contentId).innerHTML = html;
-        document.getElementById(loadingId).style.display = 'none';
-        document.getElementById(contentId).style.display = 'block';
+        const contentEl = document.getElementById(contentId);
+        contentEl.style.opacity = '0';
+        setTimeout(() => {
+            contentEl.innerHTML = html;
+            document.getElementById(loadingId).style.display = 'none';
+            contentEl.style.display = 'block';
+            contentEl.style.opacity = '1';
+        }, 150);
     } catch (error) {
         console.error('屏欣苑查詢失敗:', error);
         document.getElementById(loadingId).style.display = 'none';
@@ -217,32 +227,37 @@ async function updateTianshui() {
     const downTrains = trainData.DOWN || [];
 
     // 屯馬
-    html += `<tr class="table-row train-badge">
+    html += `<tr class="table-row row-k65">
         <td class="route-badge badge-up">屯馬線</td>
         <td colspan="3"></td>
     </tr>`;
 
     // 往烏溪沙
-    html += `<tr class="table-row train-mtr">
-        <td class="direction-label"> 往烏溪沙</td>
-        <td class="time-cell">${downTrains[0]?.ttnt || '-'} 分</td>
-        <td class="time-cell">${downTrains[1]?.ttnt || '-'} 分</td>
-        <td class="time-cell">${downTrains[2]?.ttnt || '-'} 分</td>
+    html += `<tr class="table-row row-k65">
+        <td class="direction-label">往烏溪沙</td>
+        <td class="time-cell">${downTrains[0]?.ttnt || '-'}'</td>
+        <td class="time-cell">${downTrains[1]?.ttnt || '-'}'</td>
+        <td class="time-cell">${downTrains[2]?.ttnt || '-'}'</td>
     </tr>`;
 
     // 往屯門
-    html += `<tr class="table-row train-mtr">
-        <td class="direction-label"> 往屯門</td>
-        <td class="time-cell">${upTrains[0]?.ttnt || '-'} 分</td>
-        <td class="time-cell">${upTrains[1]?.ttnt || '-'} 分</td>
-        <td class="time-cell">${upTrains[2]?.ttnt || '-'} 分</td>
+    html += `<tr class="table-row row-k65">
+        <td class="direction-label">往屯門</td>
+        <td class="time-cell">${upTrains[0]?.ttnt || '-'}'</td>
+        <td class="time-cell">${upTrains[1]?.ttnt || '-'}'</td>
+        <td class="time-cell">${upTrains[2]?.ttnt || '-'}'</td>
     </tr>`;
 
     html += '</tbody></table>';
 
-    document.getElementById(contentId).innerHTML = html;
-    document.getElementById(loadingId).style.display = 'none';
-    document.getElementById(contentId).style.display = 'block';
+    const contentEl = document.getElementById(contentId);
+    contentEl.style.opacity = '0';
+    setTimeout(() => {
+        contentEl.innerHTML = html;
+        document.getElementById(loadingId).style.display = 'none';
+        contentEl.style.display = 'block';
+        contentEl.style.opacity = '1';
+    }, 150);
 }
 
 window.addEventListener('load', function () {

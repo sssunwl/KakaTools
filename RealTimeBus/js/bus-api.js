@@ -14,8 +14,7 @@ function formatTime(seconds) {
     if (!seconds || seconds < 0) return '-';
     const minutes = Math.round(seconds / 60);
     if (minutes === 0) return '即將到達';
-    if (minutes === 1) return '1 分鐘';
-    return `${minutes} 分鐘`;
+    return `${minutes}'`;
 }
 
 function getETAClass(seconds) {
