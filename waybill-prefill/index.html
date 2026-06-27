@@ -113,72 +113,76 @@
             display: block;
         }
 
-        #invoiceInput, #packingInput {
+        #fileInput {
             display: none;
         }
 
-        .file-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        .file-list {
             margin-top: 20px;
         }
 
-        .file-group {
+        .file-item {
             display: flex;
-            flex-direction: column;
-        }
-
-        .file-group label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #e0e0e0;
+            gap: 15px;
+            align-items: center;
+            background: #1a2749;
+            border: 1px solid #334455;
+            border-radius: 6px;
+            padding: 12px;
             margin-bottom: 10px;
         }
 
-        .file-input-wrapper {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .file-input-wrapper input[type="file"] {
-            display: none;
-        }
-
-        .file-button {
-            display: block;
-            padding: 12px 20px;
-            background: #1a2749;
-            border: 2px solid #667eea;
-            border-radius: 6px;
-            color: #667eea;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-
-        .file-button:hover {
-            background: #667eea;
-            color: white;
+        .file-info {
+            flex: 1;
+            min-width: 0;
         }
 
         .file-name {
-            font-size: 13px;
-            color: #888;
-            margin-top: 6px;
+            font-size: 14px;
+            color: #e0e0e0;
             word-break: break-all;
+            margin-bottom: 4px;
         }
 
-        .file-name.loaded {
-            color: #27ae60;
-            font-weight: 600;
+        .file-type-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
-        .file-name.loaded::before {
-            content: "✓ ";
-            color: #27ae60;
+        .file-type-selector label {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .file-type-selector select {
+            background: #0f1e2e;
+            border: 1px solid #334455;
+            border-radius: 4px;
+            color: #e0e0e0;
+            padding: 6px 10px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .file-type-selector select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-remove {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-remove:hover {
+            background: #c0392b;
         }
 
         .btn-parse {
@@ -368,14 +372,6 @@
         }
 
         @media (max-width: 768px) {
-            .file-row {
-                grid-template-columns: 1fr;
-            }
-
-            .fields-grid {
-                grid-template-columns: 1fr;
-            }
-
             header h1 {
                 font-size: 22px;
             }
@@ -384,8 +380,17 @@
                 padding: 25px 15px;
             }
 
+            .file-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
             .tabs {
                 flex-wrap: wrap;
+            }
+
+            .fields-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -405,28 +410,12 @@
                     <span class="step-title">上傳 PDF 文件</span>
                 </div>
                 <div class="step-content">
-                    <div class="file-row">
-                        <div class="file-group">
-                            <label>📄 Invoice PDF</label>
-                            <div class="file-input-wrapper">
-                                <input type="file" id="invoiceInput" accept=".pdf">
-                                <div class="file-button" onclick="document.getElementById('invoiceInput').click()">
-                                    選擇檔案
-                                </div>
-                            </div>
-                            <div class="file-name" id="invoiceName">未選擇</div>
-                        </div>
-                        <div class="file-group">
-                            <label>📋 Packing List PDF</label>
-                            <div class="file-input-wrapper">
-                                <input type="file" id="packingInput" accept=".pdf">
-                                <div class="file-button" onclick="document.getElementById('packingInput').click()">
-                                    選擇檔案
-                                </div>
-                            </div>
-                            <div class="file-name" id="packingName">未選擇</div>
-                        </div>
+                    <div class="upload-area" id="uploadArea">
+                        <p>📂 拖拉 PDF 文件到這裡</p>
+                        <small>或點擊選擇檔案（支援多檔上傳）</small>
+                        <input type="file" id="fileInput" accept=".pdf" multiple>
                     </div>
+                    <div class="file-list" id="fileList"></div>
                 </div>
             </div>
 

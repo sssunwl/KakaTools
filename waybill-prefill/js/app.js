@@ -1,38 +1,105 @@
-// 主應用邏輯
+// 主應用邏輯 - 支援多檔案上傳
 
-let invoiceFile = null;
-let packingFile = null;
+let uploadedFiles = {}; // { filename: { file, type } }
 let shipmentData = null;
 
-// 檔案輸入事件
-document.getElementById('invoiceInput').addEventListener('change', function (e) {
-    invoiceFile = e.target.files[0];
-    updateFileName('invoice', invoiceFile?.name);
-    checkReadyToParse();
+// 拖拉上傳區域
+const uploadArea = document.getElementById('uploadArea');
+const fileInput = document.getElementById('fileInput');
+
+uploadArea.addEventListener('click', () => fileInput.click());
+
+uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('dragover');
 });
 
-document.getElementById('packingInput').addEventListener('change', function (e) {
-    packingFile = e.target.files[0];
-    updateFileName('packing', packingFile?.name);
-    checkReadyToParse();
+uploadArea.addEventListener('dragleave', () => {
+    uploadArea.classList.remove('dragover');
 });
 
-// 更新檔案名稱顯示
-function updateFileName(type, name) {
-    const elem = document.getElementById(type + 'Name');
-    if (name) {
-        elem.textContent = name;
-        elem.classList.add('loaded');
-    } else {
-        elem.textContent = '未選擇';
-        elem.classList.remove('loaded');
+uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    handleFiles(e.dataTransfer.files);
+});
+
+fileInput.addEventListener('change', (e) => {
+    handleFiles(e.target.files);
+});
+
+// 處理上傳的檔案
+function handleFiles(files) {
+    for (let file of files) {
+        if (file.type === 'application/pdf') {
+            uploadedFiles[file.name] = {
+                file: file,
+                type: 'unknown' // 預設為「未指定」
+            };
+        }
+    }
+    updateFileList();
+    checkReadyToParse();
+}
+
+// 更新檔案列表顯示
+function updateFileList() {
+    const fileList = document.getElementById('fileList');
+    fileList.innerHTML = '';
+
+    for (const [fileName, fileData] of Object.entries(uploadedFiles)) {
+        const fileItem = document.createElement('div');
+        fileItem.className = 'file-item';
+
+        const fileInfo = document.createElement('div');
+        fileInfo.className = 'file-info';
+        fileInfo.innerHTML = `<div class="file-name">📄 ${fileName}</div>`;
+
+        const typeSelector = document.createElement('div');
+        typeSelector.className = 'file-type-selector';
+        typeSelector.innerHTML = `
+            <label>類型:</label>
+            <select onchange="changeFileType('${fileName}', this.value)">
+                <option value="unknown">-- 未指定 --</option>
+                <option value="invoice" ${fileData.type === 'invoice' ? 'selected' : ''}>Invoice (發票)</option>
+                <option value="packing" ${fileData.type === 'packing' ? 'selected' : ''}>Packing List (包裝單)</option>
+                <option value="other" ${fileData.type === 'other' ? 'selected' : ''}>其他</option>
+            </select>
+        `;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'btn-remove';
+        removeBtn.textContent = '移除';
+        removeBtn.onclick = () => removeFile(fileName);
+
+        fileItem.appendChild(fileInfo);
+        fileItem.appendChild(typeSelector);
+        fileItem.appendChild(removeBtn);
+        fileList.appendChild(fileItem);
     }
 }
 
-// 檢查是否準備好解析
+// 改變檔案類型
+function changeFileType(fileName, newType) {
+    if (uploadedFiles[fileName]) {
+        uploadedFiles[fileName].type = newType;
+        checkReadyToParse();
+    }
+}
+
+// 移除檔案
+function removeFile(fileName) {
+    delete uploadedFiles[fileName];
+    updateFileList();
+    checkReadyToParse();
+}
+
+// 檢查是否準備好解析（必須有 Invoice 和 Packing List）
 function checkReadyToParse() {
     const parseBtn = document.getElementById('parseBtn');
-    parseBtn.disabled = !invoiceFile || !packingFile;
+    const hasInvoice = Object.values(uploadedFiles).some(f => f.type === 'invoice');
+    const hasPacking = Object.values(uploadedFiles).some(f => f.type === 'packing');
+    parseBtn.disabled = !(hasInvoice && hasPacking);
 }
 
 // 解析按鈕點擊事件
@@ -42,6 +109,16 @@ document.getElementById('parseBtn').addEventListener('click', async function () 
     btn.innerHTML = '<span class="spinner"></span>正在解析 PDF...';
 
     try {
+        const invoiceFile = Object.values(uploadedFiles).find(f => f.type === 'invoice')?.file;
+        const packingFile = Object.values(uploadedFiles).find(f => f.type === 'packing')?.file;
+
+        if (!invoiceFile || !packingFile) {
+            showError('請確認已上傳並指定 Invoice 和 Packing List');
+            btn.innerHTML = '解析 PDF';
+            btn.disabled = false;
+            return;
+        }
+
         const result = await parseShipment(invoiceFile, packingFile);
 
         if (result.success) {
@@ -184,7 +261,6 @@ function copyToClipboard(text, btn) {
 
 // Tab 切換
 function switchTab(tabName) {
-    // 隱藏所有 Tab 內容
     const tabContents = document.querySelectorAll('.tab-content');
     if (tabContents) {
         tabContents.forEach(tab => {
@@ -192,7 +268,6 @@ function switchTab(tabName) {
         });
     }
 
-    // 移除所有按鈕的 active 狀態
     const buttons = document.querySelectorAll('.tab-btn');
     if (buttons) {
         buttons.forEach(btn => {
@@ -200,17 +275,14 @@ function switchTab(tabName) {
         });
     }
 
-    // 顯示選擇的 Tab
     const tabElement = document.getElementById(tabName);
     if (tabElement) {
         tabElement.classList.add('show');
     }
 
-    // 激活對應按鈕
     if (event && event.target && event.target.classList) {
         event.target.classList.add('active');
     } else {
-        // 初次載入時，找第一個 tab-btn 激活
         const firstBtn = document.querySelector('.tab-btn');
         if (firstBtn && firstBtn.classList) {
             firstBtn.classList.add('active');
