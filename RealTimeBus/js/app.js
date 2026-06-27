@@ -50,19 +50,25 @@ async function updateXinshengcun() {
     }
 
     let html = '<table class="bus-table"><tbody>';
-    html += '<tr class="table-header"><td></td><td>最快</td><td>下一班</td><td>下下班</td></tr>';
+    html += '<tr class="table-header"><td>路線</td><td>最快</td><td>下一班</td><td>下下班</td></tr>';
 
     // K75A
+    html += `<tr class="table-row route-name-row">
+        <td colspan="4" class="route-badge badge-k75a">K75A</td>
+    </tr>`;
     html += `<tr class="table-row row-k75a">
-        <td class="route-badge badge-k75a">K75A</td>
+        <td class="direction-label">-</td>
         <td class="time-cell">${mtrK75aData?.[0]?.time || '-'}</td>
         <td class="time-cell">${mtrK75aData?.[1]?.time || '-'}</td>
         <td class="time-cell">${mtrK75aData?.[2]?.time || '-'}</td>
     </tr>`;
 
     // K75P
+    html += `<tr class="table-row route-name-row">
+        <td colspan="4" class="route-badge badge-k75p">K75P</td>
+    </tr>`;
     html += `<tr class="table-row row-k75p">
-        <td class="route-badge badge-k75p">K75P</td>
+        <td class="direction-label">-</td>
         <td class="time-cell">${mtrK75pData?.[0]?.time || '-'}</td>
         <td class="time-cell">${mtrK75pData?.[1]?.time || '-'}</td>
         <td class="time-cell">${mtrK75pData?.[2]?.time || '-'}</td>
@@ -76,9 +82,8 @@ async function updateXinshengcun() {
     const inbound2 = kmbData?.inbound?.[1];
     const inbound3 = kmbData?.inbound?.[2];
 
-    html += `<tr class="table-row row-53">
-        <td class="route-badge badge-53">53</td>
-        <td colspan="3"></td>
+    html += `<tr class="table-row route-name-row">
+        <td colspan="4" class="route-badge badge-53">53</td>
     </tr>`;
 
     // 往荃灣
@@ -148,12 +153,11 @@ async function updateTianshengYuan() {
         const k75aDownBuses = (k75aDownStop?.bus || []).slice(0, 3);
 
         let html = '<table class="bus-table"><tbody>';
-        html += '<tr class="table-header"><td></td><td>最快</td><td>下一班</td><td>下下班</td></tr>';
+        html += '<tr class="table-header"><td>路線</td><td>最快</td><td>下一班</td><td>下下班</td></tr>';
 
         // K65
-        html += `<tr class="table-row row-k65">
-            <td class="route-badge badge-up">K65</td>
-            <td colspan="3"></td>
+        html += `<tr class="table-row route-name-row">
+            <td colspan="4" class="route-badge badge-up">K65</td>
         </tr>`;
         html += `<tr class="table-row row-k65">
             <td class="direction-label">往流浮山</td>
@@ -169,9 +173,8 @@ async function updateTianshengYuan() {
         </tr>`;
 
         // K75A
-        html += `<tr class="table-row row-k75a">
-            <td class="route-badge badge-k75a">K75A</td>
-            <td colspan="3"></td>
+        html += `<tr class="table-row route-name-row">
+            <td colspan="4" class="route-badge badge-k75a">K75A</td>
         </tr>`;
         html += `<tr class="table-row row-k75a">
             <td class="direction-label">往洪水橋</td>
@@ -235,12 +238,11 @@ async function updatePingxin() {
         const k65Buses = (k65Stop?.bus || []).slice(0, 3);
 
         let html = '<table class="bus-table"><tbody>';
-        html += '<tr class="table-header"><td></td><td>最快</td><td>下一班</td><td>下下班</td></tr>';
+        html += '<tr class="table-header"><td>路線</td><td>最快</td><td>下一班</td><td>下下班</td></tr>';
 
         // 53
-        html += `<tr class="table-row row-53">
-            <td class="route-badge badge-53">53</td>
-            <td colspan="3"></td>
+        html += `<tr class="table-row route-name-row">
+            <td colspan="4" class="route-badge badge-53">53</td>
         </tr>`;
         html += `<tr class="table-row row-53">
             <td class="direction-label">往元朗形點</td>
@@ -250,9 +252,8 @@ async function updatePingxin() {
         </tr>`;
 
         // 276
-        html += `<tr class="table-row row-276">
-            <td class="route-badge badge-276">276</td>
-            <td colspan="3"></td>
+        html += `<tr class="table-row route-name-row">
+            <td colspan="4" class="route-badge badge-276">276</td>
         </tr>`;
         html += `<tr class="table-row row-276">
             <td class="direction-label">往上水</td>
@@ -262,9 +263,8 @@ async function updatePingxin() {
         </tr>`;
 
         // K65
-        html += `<tr class="table-row row-k65">
-            <td class="route-badge badge-up">K65</td>
-            <td colspan="3"></td>
+        html += `<tr class="table-row route-name-row">
+            <td colspan="4" class="route-badge badge-up">K65</td>
         </tr>`;
         html += `<tr class="table-row row-k65">
             <td class="direction-label">往流浮山</td>
@@ -316,15 +316,14 @@ async function updateTianshui() {
     }
 
     let html = '<table class="bus-table"><tbody>';
-    html += '<tr class="table-header"><td></td><td>最快</td><td>下一班</td><td>下下班</td></tr>';
+    html += '<tr class="table-header"><td>路線</td><td>最快</td><td>下一班</td><td>下下班</td></tr>';
 
     const upTrains = trainData.UP || [];
     const downTrains = trainData.DOWN || [];
 
     // 屯馬
-    html += `<tr class="table-row row-k65">
-        <td class="route-badge badge-up">屯馬線</td>
-        <td colspan="3"></td>
+    html += `<tr class="table-row route-name-row">
+        <td colspan="4" class="route-badge badge-up">屯馬線</td>
     </tr>`;
 
     // 往烏溪沙
