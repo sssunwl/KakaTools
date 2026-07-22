@@ -394,8 +394,51 @@
             }
         }
     </style>
+    <style>
+        :root { --ink:#283044; --muted:#747887; --paper:#fff9ef; --coral:#ff6b57; --orange:#ffb33c; --line:rgba(40,48,68,.11); }
+        body { padding:0 20px 44px; color:var(--ink); font-family:ui-rounded,"SF Pro Rounded","Noto Sans TC",system-ui,sans-serif; background:radial-gradient(circle at 8% 10%,#ffd9bc 0,transparent 28%),radial-gradient(circle at 92% 80%,#d9d8ff 0,transparent 28%),linear-gradient(145deg,#fffaf2,#f7f5ff); }
+        .kaka-nav { max-width:1200px; margin:auto; padding:22px 4px; display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:800; }
+        .kaka-nav a { color:var(--ink); text-decoration:none; transition:transform .2s; }
+        .kaka-nav a:hover { transform:translateX(-4px); }
+        .kaka-nav span { color:var(--muted); }
+        .container { max-width:1200px; border-radius:32px; background:rgba(255,255,255,.78); border:1px solid rgba(255,255,255,.9); box-shadow:0 22px 70px rgba(55,45,76,.13); }
+        header { position:relative; overflow:hidden; padding:54px 30px; background:linear-gradient(135deg,#ff765f,#ffab48); }
+        header::before, header::after { content:""; position:absolute; border-radius:50%; background:#fff2; }
+        header::before { width:190px; height:190px; right:-40px; top:-90px; }
+        header::after { width:100px; height:100px; left:8%; bottom:-65px; }
+        header h1 { position:relative; font-size:clamp(30px,5vw,48px); letter-spacing:-1.5px; margin-bottom:10px; }
+        header p { position:relative; font-size:15px; }
+        main { padding:45px 38px 20px; color:var(--ink); background:transparent; }
+        .step { position:relative; margin-bottom:30px; padding:26px; border:1px solid var(--line); border-radius:24px; background:rgba(255,255,255,.72); transition:transform .3s,box-shadow .3s,border-color .3s; }
+        .step:hover { transform:translateY(-3px); border-color:#ff9b8266; box-shadow:0 16px 35px rgba(79,53,68,.09); }
+        .step-number { width:38px; height:38px; line-height:38px; background:var(--coral); box-shadow:0 7px 16px #ff6b5735; }
+        .step-title { color:var(--ink); font-size:19px; }
+        .step-content { margin-top:18px; }
+        .upload-area { padding:48px 28px; border:2px dashed #ff8d78; border-radius:19px; background:#fff6ed; }
+        .upload-area:hover,.upload-area.dragover { border-color:var(--coral); background:#ffebdd; transform:scale(1.008); }
+        .upload-area p { color:#d84f3b; font-size:17px; font-weight:800; }
+        .upload-area small,.file-type-selector label { color:var(--muted); }
+        .file-item,.field-card { color:var(--ink); background:#fff; border:1px solid var(--line); border-radius:15px; }
+        .file-name,.field-value { color:var(--ink); }
+        .file-type-selector select,.field-value { color:var(--ink); background:#fffaf4; border-color:var(--line); border-radius:10px; }
+        .btn-remove { border-radius:10px; }
+        .btn-parse { padding:14px 30px; border-radius:14px; background:linear-gradient(135deg,var(--coral),#ff9c43); box-shadow:0 9px 20px #ff6b5733; }
+        .btn-parse:hover:not(:disabled) { box-shadow:0 14px 25px #ff6b5740; }
+        .tabs { border-color:var(--line); }
+        .tab-btn { color:var(--muted); border-radius:12px 12px 0 0; }
+        .tab-btn:hover { color:var(--coral); background:#fff3ea; }
+        .tab-btn.active { color:var(--coral); border-bottom-color:var(--coral); }
+        .field-card:hover { border-color:#ff8d78; box-shadow:0 8px 20px #ff6b5718; transform:translateY(-2px); }
+        .field-label { color:#d84f3b; }
+        .btn-copy { border-radius:10px; background:var(--coral); }
+        .btn-copy:hover { background:#e95543; transform:translateY(-1px); }
+        footer { border-color:var(--line); background:#fff4e7; color:#986c5c; padding:23px 30px; }
+        @media(max-width:768px){ body{padding:0 12px 24px}.kaka-nav{padding:18px 2px}.kaka-nav span{display:none}.container{border-radius:24px}header{padding:38px 18px}main{padding:24px 12px 8px}.step{padding:20px 15px}.step-content{margin-left:0}.upload-area{padding:36px 16px}.fields-grid{grid-template-columns:1fr}.tabs{gap:0;overflow-x:auto;flex-wrap:nowrap}.tab-btn{white-space:nowrap;padding:11px 13px}}
+        @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+    </style>
 </head>
 <body>
+    <nav class="kaka-nav"><a href="../">← KakaTools</a><span>文件留在瀏覽器，不上傳伺服器</span></nav>
     <div class="container">
         <header>
             <h1>📦 運單預填工具</h1>
