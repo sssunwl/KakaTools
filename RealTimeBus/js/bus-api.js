@@ -14,7 +14,14 @@ function formatTime(seconds) {
     if (!seconds || seconds < 0) return '-';
     const minutes = Math.round(seconds / 60);
     if (minutes === 0) return '即將到達';
-    return `${minutes}'`;
+    return `${minutes} min`;
+}
+
+function normalizeMinuteUnit(value) {
+    if (value === undefined || value === null || value === '') return '-';
+    return String(value)
+        .replace(/(\d+)\s*分鐘/g, '$1 min')
+        .replace(/(\d+)\s*'/g, '$1 min');
 }
 
 function getETAClass(seconds) {
@@ -114,7 +121,7 @@ async function fetchMTRBusETA(routeName, targetStopId) {
         return targetStop.bus
             .slice(0, 3)
             .map(bus => ({
-                time: bus.departureTimeText || '-',
+                time: normalizeMinuteUnit(bus.departureTimeText),
                 secondsToGo: parseInt(bus.departureTimeInSecond) || 0
             }))
             .filter(bus => bus.secondsToGo >= 0);

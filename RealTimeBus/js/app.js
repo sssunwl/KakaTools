@@ -153,30 +153,30 @@ async function updateTianshengYuan() {
         html += `<tr class="table-row row-k65">
             <td class="route-badge badge-up" rowspan="2">K65</td>
             <td class="direction-label" style="color: #0d7f94;">往流浮山</td>
-            <td class="time-cell">${k65UpBuses[0]?.departureTimeText || '-'}</td>
-            <td class="time-cell">${k65UpBuses[1]?.departureTimeText || '-'}</td>
-            <td class="time-cell">${k65UpBuses[2]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k65UpBuses[0]?.departureTimeText)}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k65UpBuses[1]?.departureTimeText)}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k65UpBuses[2]?.departureTimeText)}</td>
         </tr>`;
         html += `<tr class="table-row row-k65">
             <td class="direction-label" style="color: #0d7f94;">往元朗站</td>
-            <td class="time-cell">${k65DownBuses[0]?.departureTimeText || '-'}</td>
-            <td class="time-cell">${k65DownBuses[1]?.departureTimeText || '-'}</td>
-            <td class="time-cell">${k65DownBuses[2]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k65DownBuses[0]?.departureTimeText)}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k65DownBuses[1]?.departureTimeText)}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k65DownBuses[2]?.departureTimeText)}</td>
         </tr>`;
 
         // K75A rowspan=2
         html += `<tr class="table-row row-k75a">
             <td class="route-badge badge-k75a" rowspan="2">K75A</td>
             <td class="direction-label" style="color: #17a2b8;">往洪水橋</td>
-            <td class="time-cell">${k75aUpBuses[0]?.departureTimeText || '-'}</td>
-            <td class="time-cell">${k75aUpBuses[1]?.departureTimeText || '-'}</td>
-            <td class="time-cell">${k75aUpBuses[2]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k75aUpBuses[0]?.departureTimeText)}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k75aUpBuses[1]?.departureTimeText)}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k75aUpBuses[2]?.departureTimeText)}</td>
         </tr>`;
         html += `<tr class="table-row row-k75a">
             <td class="direction-label" style="color: #17a2b8;">回程</td>
-            <td class="time-cell">${k75aDownBuses[0]?.departureTimeText || '-'}</td>
-            <td class="time-cell">${k75aDownBuses[1]?.departureTimeText || '-'}</td>
-            <td class="time-cell">${k75aDownBuses[2]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k75aDownBuses[0]?.departureTimeText)}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k75aDownBuses[1]?.departureTimeText)}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k75aDownBuses[2]?.departureTimeText)}</td>
         </tr>`;
 
         html += '</tbody></table>';
@@ -252,9 +252,9 @@ async function updatePingxin() {
         html += `<tr class="table-row row-k65">
             <td class="route-badge badge-up">K65</td>
             <td class="direction-label" style="color: #0d7f94;">往流浮山</td>
-            <td class="time-cell">${k65Buses[0]?.departureTimeText || '-'}</td>
-            <td class="time-cell">${k65Buses[1]?.departureTimeText || '-'}</td>
-            <td class="time-cell">${k65Buses[2]?.departureTimeText || '-'}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k65Buses[0]?.departureTimeText)}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k65Buses[1]?.departureTimeText)}</td>
+            <td class="time-cell">${normalizeMinuteUnit(k65Buses[2]?.departureTimeText)}</td>
         </tr>`;
 
         html += '</tbody></table>';
@@ -309,17 +309,17 @@ async function updateTianshui() {
     html += `<tr class="table-row row-k65">
         <td class="route-badge badge-up" rowspan="2">屯馬線</td>
         <td class="direction-label" style="color: #0d7f94;">往烏溪沙</td>
-        <td class="time-cell">${downTrains[0]?.ttnt || '-'}'</td>
-        <td class="time-cell">${downTrains[1]?.ttnt || '-'}'</td>
-        <td class="time-cell">${downTrains[2]?.ttnt || '-'}'</td>
+        <td class="time-cell">${downTrains[0]?.ttnt ? `${downTrains[0].ttnt} min` : '-'}</td>
+        <td class="time-cell">${downTrains[1]?.ttnt ? `${downTrains[1].ttnt} min` : '-'}</td>
+        <td class="time-cell">${downTrains[2]?.ttnt ? `${downTrains[2].ttnt} min` : '-'}</td>
     </tr>`;
 
     // 往屯門
     html += `<tr class="table-row row-k65">
         <td class="direction-label" style="color: #0d7f94;">往屯門</td>
-        <td class="time-cell">${upTrains[0]?.ttnt || '-'}'</td>
-        <td class="time-cell">${upTrains[1]?.ttnt || '-'}'</td>
-        <td class="time-cell">${upTrains[2]?.ttnt || '-'}'</td>
+        <td class="time-cell">${upTrains[0]?.ttnt ? `${upTrains[0].ttnt} min` : '-'}</td>
+        <td class="time-cell">${upTrains[1]?.ttnt ? `${upTrains[1].ttnt} min` : '-'}</td>
+        <td class="time-cell">${upTrains[2]?.ttnt ? `${upTrains[2].ttnt} min` : '-'}</td>
     </tr>`;
 
     html += '</tbody></table>';
