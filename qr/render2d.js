@@ -42,19 +42,7 @@ export function renderSVG(q,o) {
 }
 function roundedPath(x,y,w,r){return `M ${x+r} ${y} H ${x+w-r} Q ${x+w} ${y} ${x+w} ${y+r} V ${y+w-r} Q ${x+w} ${y+w} ${x+w-r} ${y+w} H ${x+r} Q ${x} ${y+w} ${x} ${y+w-r} V ${y+r} Q ${x} ${y} ${x+r} ${y} Z`;}
 export async function renderCanvas(q,o) { const {svgCanvas}=await import('./verify.js');return svgCanvas(renderSVG(q,o),+o.size); }
-// The same deterministic palette feeds the voxel floor and its scan export.
-export function floorColors(q,text,season) {
-  let seed=2166136261;for(const ch of text)seed=Math.imul(seed^ch.codePointAt(0),16777619);
-  const hue={spring:142,summer:105,autumn:30}[season]||142;
-  const rgb=(h,s,l)=>{const f=n=>{const k=(n+h/30)%12,a=s*Math.min(l,1-l);return l-a*Math.max(-1,Math.min(k-3,9-k,1));};return [f(0),f(8),f(4)];};
-  const labL=rgb=>{const v=rgb.map(c=>c<=.04045?c/12.92:((c+.055)/1.055)**2.4),y=.2126*v[0]+.7152*v[1]+.0722*v[2];return y>.008856?116*Math.cbrt(y)-16:903.3*y;};
-  return Array.from({length:q.size+8},(_,r)=>Array.from({length:q.size+8},(_,c)=>{
-    seed=(Math.imul(seed,1664525)+1013904223)>>>0;const dark=q.modules[r-4]?.[c-4]===true;
-    let l=(dark?.19:.9)+(seed/4294967296-.5)*.045,color=rgb(hue,dark?.35:.22,l);
-    while(dark?labL(color)>35:labL(color)<75){l+=dark?-.005:.005;color=rgb(hue,dark?.35:.22,l);}
-    return '#'+color.map(v=>Math.round(v*255).toString(16).padStart(2,'0')).join('');
-  }));
-}
+export {floorColors} from './palette3d.js';
 export function renderFloor(q,colors,size=1024) {
   const canvas=document.createElement('canvas');canvas.width=canvas.height=size;const ctx=canvas.getContext('2d'),n=colors.length;
   for(let r=0;r<n;r++)for(let c=0;c<n;c++){ctx.fillStyle=colors[r][c];ctx.fillRect(Math.floor(c*size/n),Math.floor(r*size/n),Math.ceil(size/n)+1,Math.ceil(size/n)+1);}return canvas;
